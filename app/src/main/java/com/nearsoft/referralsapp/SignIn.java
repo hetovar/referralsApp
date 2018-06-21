@@ -1,16 +1,19 @@
 package com.nearsoft.referralsapp;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 public class SignIn extends AppCompatActivity implements View.OnClickListener {
@@ -47,6 +50,10 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener {
     }
 
     private void updateUI(GoogleSignInAccount account) {
+        // If account is different than null than user has already sign in.
+        if(account != null){
+            // TODO: Open Joblisting Activity.
+        }
     }
 
     @Override
@@ -89,5 +96,21 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener {
             Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
             updateUI(null);
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        // TODO: Delete this after the demo is over is just to show the sign in from google account.
+        mGoogleSignInClient.signOut()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        // [START_EXCLUDE]
+                        updateUI(null);
+                        // [END_EXCLUDE]
+                    }
+                });
     }
 }
