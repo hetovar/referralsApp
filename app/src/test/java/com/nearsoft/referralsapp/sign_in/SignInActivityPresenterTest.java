@@ -10,16 +10,16 @@ import static org.mockito.Mockito.verify;
 /**
  * Local unit test for the sign in presenter class.
  */
-public class SignInPresenterTest {
+public class SignInActivityPresenterTest {
     @Mock
-    private SignInContract.SingInView mView;
+    private SignInActivityContract.SingInView mView;
 
-    private SignInPresenter mPresenter;
+    private SignInActivityPresenter mPresenter;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        mPresenter = new SignInPresenter(mView);
+        mPresenter = new SignInActivityPresenter(mView);
     }
 
     @Test

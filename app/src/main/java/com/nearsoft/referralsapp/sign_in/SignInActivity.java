@@ -1,6 +1,7 @@
 package com.nearsoft.referralsapp.sign_in;
 
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,34 +19,36 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.nearsoft.referralsapp.JobListing;
 import com.nearsoft.referralsapp.R;
+import com.nearsoft.referralsapp.databinding.SignInActivityBinding;
 
-public class SignIn extends AppCompatActivity implements View.OnClickListener, SignInContract.SingInView {
-    private static final String TAG = "SignIn Activity";
+public class SignInActivity extends AppCompatActivity implements SignInActivityContract.SingInView {
+    private static final String TAG = "SignInActivity Activity";
     private static final String EMAIL_REGEX = "^[a-zA-Z]+@nearsoft.com$";
     private static final int RC_SIGN_IN = 9001;
     private GoogleSignInClient mGoogleSignInClient;
-    private SignInPresenter mPresenter;
+    private SignInActivityPresenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_in);
-        mPresenter = new SignInPresenter(this);
+        SignInActivityBinding binding = DataBindingUtil.setContentView(this, R.layout.sign_in_activity);
+        mPresenter = new SignInActivityPresenter(this);
+        binding.setPresenter(mPresenter);
 
-        // Set the dimensions of the sign-in button.
-        SignInButton signInButton = findViewById(R.id.sign_in_button);
-        signInButton.setSize(SignInButton.SIZE_WIDE);
-
-        // Configure sign-in to request the user's ID, email address, and basic
-        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-
-        // Build a GoogleSignInClient with the options specified by gso.
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
-        findViewById(R.id.sign_in_button).setOnClickListener(this);
+//        // Set the dimensions of the sign-in button.
+//        SignInButton signInButton = findViewById(R.id.sign_in_button);
+//        signInButton.setSize(SignInButton.SIZE_WIDE);
+//
+//        // Configure sign-in to request the user's ID, email address, and basic
+//        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+//        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//                .requestEmail()
+//                .build();
+//
+//        // Build a GoogleSignInClient with the options specified by gso.
+//        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+//
+//        findViewById(R.id.sign_in_button).setOnClickListener(this);
     }
 
     @Override
@@ -60,15 +63,14 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener, S
 
     private void updateUI(GoogleSignInAccount account) {
         // If account is different than null than user has already sign in.
-        if(account != null){
+        if (account != null) {
             // Verify that the account is a nearsoftian account
             String email = account.getEmail();
-            if(email != null && email.matches(EMAIL_REGEX)) {
+            if (email != null && email.matches(EMAIL_REGEX)) {
                 startActivity(new Intent(this, JobListing.class));
                 Toast.makeText(this, "Sign in Successfully", Toast.LENGTH_SHORT).show();
                 finish();
-            }
-            else {
+            } else {
                 Toast.makeText(this, "Not a nearsoftian email", Toast.LENGTH_SHORT).show();
                 signOut();
             }
@@ -92,16 +94,16 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener, S
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.sign_in_button:
-                signIn();
-                break;
-            default:
-                break;
-        }
-    }
+//    @Override
+//    public void onClick(View v) {
+//        switch (v.getId()) {
+//            case R.id.sign_in_button:
+//                signIn();
+//                break;
+//            default:
+//                break;
+//        }
+//    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
