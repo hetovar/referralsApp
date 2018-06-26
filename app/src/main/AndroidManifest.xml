@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:fullBackupContent="false">
-        <activity android:name=".SignIn">
+        <activity android:name=".sign_in.SignIn">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

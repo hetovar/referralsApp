@@ -1,4 +1,4 @@
-package com.nearsoft.referralsapp;
+package com.nearsoft.referralsapp.sign_in;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -16,18 +16,21 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.nearsoft.referralsapp.JobListing;
+import com.nearsoft.referralsapp.R;
 
-public class SignIn extends AppCompatActivity implements View.OnClickListener {
-
+public class SignIn extends AppCompatActivity implements View.OnClickListener, SignInContract.SingInView {
     private static final String TAG = "SignIn Activity";
     private static final String EMAIL_REGEX = "^[a-zA-Z]+@nearsoft.com$";
     private static final int RC_SIGN_IN = 9001;
     private GoogleSignInClient mGoogleSignInClient;
+    private SignInPresenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+        mPresenter = new SignInPresenter(this);
 
         // Set the dimensions of the sign-in button.
         SignInButton signInButton = findViewById(R.id.sign_in_button);
@@ -133,5 +136,10 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener {
 
         // TODO: Delete this after the demo is over is just to show the sign in from google account.
         signOut();
+    }
+
+    @Override
+    public void showJobListingActivity() {
+        Toast.makeText(this, "Sign in Successfully", Toast.LENGTH_SHORT).show();
     }
 }
