@@ -19,12 +19,12 @@ public class SignInActivityPresenterTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        mPresenter = new SignInActivityPresenter(mView);
+        mPresenter = new SignInActivityPresenter(mView, mGoogleSignInClient);
     }
 
     @Test
     public void handleSignInWithGoogleClick() {
         mPresenter.handleSignInWithGoogleClick();
-        verify(mView).showJobListingActivity();
+        verify(mView).displaySignInSuccessMessage();
     }
 }

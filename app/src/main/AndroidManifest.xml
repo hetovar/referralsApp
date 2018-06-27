@@ -19,7 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".JobListing"
+        <activity android:name=".job_openings.JobListing"
             android:label="Our Openings"
             />
     </application>
