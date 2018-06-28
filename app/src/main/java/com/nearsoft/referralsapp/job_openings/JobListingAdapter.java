@@ -1,5 +1,6 @@
 package com.nearsoft.referralsapp.job_openings;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,12 +9,15 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.nearsoft.referralsapp.NearsoftJob;
 import com.nearsoft.referralsapp.R;
 
 import java.util.ArrayList;
 
 public class JobListingAdapter extends RecyclerView.Adapter<JobListingAdapter.ViewHolder>{
-    private ArrayList<String> mDataset;
+    private ArrayList<NearsoftJob> nearsoftJobs;
+    private Context context;
+    private JobListingAdapterListener listener;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView mTextView;
@@ -26,8 +30,10 @@ public class JobListingAdapter extends RecyclerView.Adapter<JobListingAdapter.Vi
         }
     }
 
-    JobListingAdapter(ArrayList<String> myDataset) {
-        mDataset = myDataset;
+    public JobListingAdapter(ArrayList<NearsoftJob> nearsoftJobs, Context context, JobListingAdapterListener listener) {
+        this.nearsoftJobs = nearsoftJobs;
+        this.context = context;
+        this.listener = listener;
     }
 
     @NonNull
@@ -41,11 +47,16 @@ public class JobListingAdapter extends RecyclerView.Adapter<JobListingAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.mTextView.setText(mDataset.get(position));
+        String title = nearsoftJobs.get(position).getTitle();
+        holder.mTextView.setText(title);
     }
 
     @Override
     public int getItemCount() {
-        return mDataset.size();
+        return nearsoftJobs.size();
+    }
+
+    public interface JobListingAdapterListener {
+        void onRowClicked();
     }
 }
