@@ -16,7 +16,7 @@ import com.nearsoft.referralsapp.R;
 
 import java.util.ArrayList;
 
-public class JobListing extends AppCompatActivity {
+public class JobListingActivity extends AppCompatActivity {
 
     private RequestQueue mRequestQueue;
     private static final String TAG = "TAG";
@@ -29,6 +29,9 @@ public class JobListing extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_job_listing);
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+
+        //TODO: Implement Dagger dependency injection.
+        //TODO: Utilizar Retrofit
 
         // Instantiate the RequestQueue.
         mRequestQueue = Volley.newRequestQueue(this);
@@ -69,7 +72,6 @@ public class JobListing extends AppCompatActivity {
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-
     }
 
     @Override

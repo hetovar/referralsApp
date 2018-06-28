@@ -20,8 +20,4 @@ public interface SignInActivityContract {
         void signInError();
         void checkGoogleAccount(GoogleSignInAccount lastSignedInAccount);
     }
-
-    interface SignInModel{
-        void handleSignInWithGoogle(GoogleSignInAccount account);
-    }
 }

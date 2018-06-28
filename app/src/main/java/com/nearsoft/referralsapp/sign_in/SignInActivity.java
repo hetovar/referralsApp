@@ -14,7 +14,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
-import com.nearsoft.referralsapp.job_openings.JobListing;
+import com.nearsoft.referralsapp.job_openings.JobListingActivity;
 import com.nearsoft.referralsapp.R;
 import com.nearsoft.referralsapp.databinding.SignInActivityBinding;
 
@@ -42,7 +42,7 @@ public class SignInActivity extends AppCompatActivity implements SignInActivityC
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        mPresenter = new SignInActivityPresenter(this, mGoogleSignInClient);
+        mPresenter = new SignInActivityPresenter(this);
         binding.setPresenter(mPresenter);
     }
 
@@ -86,7 +86,7 @@ public class SignInActivity extends AppCompatActivity implements SignInActivityC
 
     @Override
     public void startHomeActivity() {
-        startActivity(new Intent(this, JobListing.class));
+        startActivity(new Intent(this, JobListingActivity.class));
         finish();
     }
 

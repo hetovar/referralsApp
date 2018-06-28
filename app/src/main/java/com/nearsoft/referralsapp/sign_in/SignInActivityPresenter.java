@@ -7,11 +7,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 
 public class SignInActivityPresenter implements SignInActivityContract.SignInPresenter {
     private SignInActivityContract.SingInView mView;
-    private SignInActivityContract.SignInModel mModel;
+    private static final String EMAIL_REGEX = "^[a-zA-Z]+@nearsoft.com$";
 
-    public SignInActivityPresenter(SignInActivityContract.SingInView mView, GoogleSignInClient mGoogleSignInClient) {
+    public SignInActivityPresenter(SignInActivityContract.SingInView mView) {
         this.mView = mView;
-        this.mModel = new SignInActivityModel(this);
     }
 
     @Override
@@ -34,6 +33,14 @@ public class SignInActivityPresenter implements SignInActivityContract.SignInPre
 
     @Override
     public void checkGoogleAccount(GoogleSignInAccount lastSignedInAccount) {
-        mModel.handleSignInWithGoogle(lastSignedInAccount);
+        if (lastSignedInAccount != null) {
+            // Verify that the account is a nearsoftian account
+            String email = lastSignedInAccount.getEmail();
+            if (email != null && email.matches(EMAIL_REGEX)) {
+                signInSuccess();
+            } else {
+                signInError();
+            }
+        }
     }
 }
