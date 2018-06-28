@@ -4,10 +4,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.nearsoft.referralsapp.ApiClient;
 import com.nearsoft.referralsapp.ApiInterface;
+import com.nearsoft.referralsapp.DividerItemDecoration;
 import com.nearsoft.referralsapp.NearsoftJob;
 import com.nearsoft.referralsapp.R;
 
@@ -26,11 +28,10 @@ public class JobListingActivity extends AppCompatActivity implements JobListingA
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_job_listing);
+        setContentView(R.layout.job_listing_activity);
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
         //TODO: Implement Dagger dependency injection.
-        //TODO: Utilizar Retrofit
 
         mAdapter = new JobListingAdapter( mNearsoftJobs, this, this);
 
@@ -38,6 +39,7 @@ public class JobListingActivity extends AppCompatActivity implements JobListingA
 
         mLayoutManager = new LinearLayoutManager(getApplicationContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -54,12 +56,8 @@ public class JobListingActivity extends AppCompatActivity implements JobListingA
         call.enqueue(new Callback<ArrayList<NearsoftJob>>() {
             @Override
             public void onResponse(Call<ArrayList<NearsoftJob>> call, Response<ArrayList<NearsoftJob>> response) {
-
                 mNearsoftJobs.clear();
-
-                for (NearsoftJob message : response.body())
-                    mNearsoftJobs.add(message);
-
+                mNearsoftJobs.addAll(response.body());
                 mAdapter.notifyDataSetChanged();
             }
 
@@ -77,6 +75,8 @@ public class JobListingActivity extends AppCompatActivity implements JobListingA
 
     @Override
     public void onRowClicked() {
-
+        // TODO: switch to the Job description fragment and apply animation of button clicked.
     }
+
+
 }
