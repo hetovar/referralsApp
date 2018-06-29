@@ -1,14 +1,11 @@
 package com.nearsoft.referralsapp;
 
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-
 public class NearsoftJob {
     private String title;
-    private JSONObject description;
+    private JobDescription description;
 
     public NearsoftJob() {
+
     }
 
     public String getTitle() {
@@ -19,11 +16,12 @@ public class NearsoftJob {
         this.title = title;
     }
 
-    public JSONObject getDescription() {
+    public JobDescription getDescription() {
         return description;
     }
 
-    public void setDescription(JSONObject description) {
+    public void setDescription(JobDescription description) {
         this.description = description;
     }
+
 }

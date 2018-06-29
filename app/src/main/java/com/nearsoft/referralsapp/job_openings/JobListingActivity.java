@@ -1,17 +1,18 @@
 package com.nearsoft.referralsapp.job_openings;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.nearsoft.referralsapp.ApiClient;
 import com.nearsoft.referralsapp.ApiInterface;
-import com.nearsoft.referralsapp.DividerItemDecoration;
+import com.nearsoft.referralsapp.JobDescription;
 import com.nearsoft.referralsapp.NearsoftJob;
 import com.nearsoft.referralsapp.R;
+import com.nearsoft.referralsapp.job_details.JobDetailsActivity;
 
 import java.util.ArrayList;
 
@@ -19,7 +20,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class JobListingActivity extends AppCompatActivity implements JobListingAdapter.JobListingAdapterListener {
+public class JobListingActivity extends AppCompatActivity
+        implements JobListingAdapter.JobListingAdapterListener{
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
     private ArrayList<NearsoftJob> mNearsoftJobs = new ArrayList<>();
@@ -39,7 +41,6 @@ public class JobListingActivity extends AppCompatActivity implements JobListingA
 
         mLayoutManager = new LinearLayoutManager(getApplicationContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -74,9 +75,19 @@ public class JobListingActivity extends AppCompatActivity implements JobListingA
     }
 
     @Override
-    public void onRowClicked() {
+    public void onRowClicked(JobDescription jobDescription) {
         // TODO: switch to the Job description fragment and apply animation of button clicked.
+
+        Intent intent = new Intent(this, JobDetailsActivity.class);
+
+        if(jobDescription.getRequirements() != null)
+            intent.putExtra("Requirements", jobDescription.getRequirements());
+        if(jobDescription.getResponsibilities() != null)
+            intent.putExtra("Responsibilities", jobDescription.getResponsibilities());
+        if(jobDescription.getSkills() != null)
+            intent.putExtra("Skills", jobDescription.getSkills());
+        if(jobDescription.getGenerals() != null)
+            intent.putExtra("Generals", jobDescription.getGenerals());
+        startActivity(intent);
     }
-
-
 }

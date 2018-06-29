@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.nearsoft.referralsapp.JobDescription;
 import com.nearsoft.referralsapp.NearsoftJob;
 import com.nearsoft.referralsapp.R;
 
@@ -40,7 +41,7 @@ public class JobListingAdapter extends RecyclerView.Adapter<JobListingAdapter.Vi
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.text_view, parent, false);
+                .inflate(R.layout.row_job_list, parent, false);
 
         return new ViewHolder(view);
     }
@@ -49,6 +50,18 @@ public class JobListingAdapter extends RecyclerView.Adapter<JobListingAdapter.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         String title = nearsoftJobs.get(position).getTitle();
         holder.mTextView.setText(title);
+
+        applyClickEvents(holder, position);
+    }
+
+    private void applyClickEvents(ViewHolder holder, final int position) {
+        holder.layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NearsoftJob nearsoftJob = nearsoftJobs.get(position);
+                listener.onRowClicked(nearsoftJob.getDescription());
+            }
+        });
     }
 
     @Override
@@ -57,6 +70,6 @@ public class JobListingAdapter extends RecyclerView.Adapter<JobListingAdapter.Vi
     }
 
     public interface JobListingAdapterListener {
-        void onRowClicked();
+        void onRowClicked(JobDescription jobDescription);
     }
 }
