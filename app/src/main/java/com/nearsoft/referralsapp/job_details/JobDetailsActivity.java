@@ -4,6 +4,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.nearsoft.referralsapp.R;
@@ -16,12 +19,15 @@ public class JobDetailsActivity extends AppCompatActivity {
     private ArrayList<String> mTitle;
 //    private ArrayList<String> jobDescription;
 //    private ArrayList<String> jobGenerals;
-//    private ArrayList<String> jobRespobalities;
+//    private ArrayList<String> jobResponsabilities;
 //    private ArrayList<String> jobSkills;
 
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
     private JobDetailAdapter mAdapter;
+    private EditText mName;
+    private EditText mEmail;
+    private EditText mResume;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +43,9 @@ public class JobDetailsActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
+
+        mName = findViewById(R.id.name_edit_text);
+        mEmail = findViewById(R.id.email_edit_text);
 
         FillDescription();
     }

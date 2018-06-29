@@ -23,7 +23,8 @@
             android:name=".job_openings.JobListingActivity"
             android:label="Our Openings" />
         <activity android:name=".job_details.JobDetailsActivity"
-            android:label="Job Details"></activity>
+            android:label="Job Details"
+            android:windowSoftInputMode="adjustPan"></activity>
     </application>
 
 </manifest>
