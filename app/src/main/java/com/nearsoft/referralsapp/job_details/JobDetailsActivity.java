@@ -1,26 +1,26 @@
 package com.nearsoft.referralsapp.job_details;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.nearsoft.referralsapp.R;
 import com.nearsoft.referralsapp.job_openings.JobListingAdapter;
+import com.nearsoft.referralsapp.send_referral.ReferralActivity;
 
 import java.util.ArrayList;
 
 public class JobDetailsActivity extends AppCompatActivity {
     private ArrayList<String> mJobDescription = new ArrayList<>();
     private ArrayList<String> mTitle;
-//    private ArrayList<String> jobDescription;
-//    private ArrayList<String> jobGenerals;
-//    private ArrayList<String> jobResponsabilities;
-//    private ArrayList<String> jobSkills;
 
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
@@ -28,6 +28,7 @@ public class JobDetailsActivity extends AppCompatActivity {
     private EditText mName;
     private EditText mEmail;
     private EditText mResume;
+    private Button mSend;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,14 @@ public class JobDetailsActivity extends AppCompatActivity {
 
         mName = findViewById(R.id.name_edit_text);
         mEmail = findViewById(R.id.email_edit_text);
+        mSend = findViewById(R.id.refer_button);
+
+        mSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), ReferralActivity.class));
+            }
+        });
 
         FillDescription();
     }

@@ -8,4 +8,7 @@ import retrofit2.http.GET;
 public interface ApiInterface {
     @GET("jobs")
     Call<ArrayList<NearsoftJob>> getJob();
+
+    @GET("recruiters")
+    Call<ArrayList<Recruiter>> getRecruiter();
 }

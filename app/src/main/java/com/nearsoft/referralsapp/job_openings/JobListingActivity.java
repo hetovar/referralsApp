@@ -47,10 +47,10 @@ public class JobListingActivity extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
-        getInbox();
+        getJobs();
     }
 
-    private void getInbox() {
+    private void getJobs() {
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
         Call<ArrayList<NearsoftJob>> call = apiService.getJob();
@@ -76,8 +76,6 @@ public class JobListingActivity extends AppCompatActivity
 
     @Override
     public void onRowClicked(JobDescription jobDescription) {
-        // TODO: switch to the Job description fragment and apply animation of button clicked.
-
         Intent intent = new Intent(this, JobDetailsActivity.class);
 
         if(jobDescription.getRequirements() != null)

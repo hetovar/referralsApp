@@ -78,9 +78,6 @@ public class SignInActivity extends AppCompatActivity implements SignInActivityC
     @Override
     protected void onStop() {
         super.onStop();
-
-        // TODO: Delete this after the demo is over is just to show the sign in from google account.
-        signOut();
         mPresenter = null;
     }
 
