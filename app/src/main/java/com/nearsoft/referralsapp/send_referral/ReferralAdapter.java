@@ -18,17 +18,17 @@ import java.util.ArrayList;
 class ReferralAdapter extends RecyclerView.Adapter<ReferralAdapter.ViewHolder>{
     private ArrayList<Recruiter> recruiters;
     private ReferralAdapterListener listener;
+    private int selectedPos = RecyclerView.NO_POSITION;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView mRecruiterName;
         LinearLayout layout;
-        //TODO: Change to fresco container.
         SimpleDraweeView mRecruiterImage;
 
         ViewHolder(View itemView) {
             super(itemView);
             mRecruiterName = itemView.findViewById(R.id.recruiter_name);
-            layout = itemView.findViewById(R.id.itemLayout);
+            layout = itemView.findViewById(R.id.recruiter_item_layout);
             mRecruiterImage = itemView.findViewById(R.id.recruiter_image);
         }
     }
@@ -53,17 +53,21 @@ class ReferralAdapter extends RecyclerView.Adapter<ReferralAdapter.ViewHolder>{
         String pictureUri = recruiters.get(position).getPicture();
 
         viewHolder.mRecruiterName.setText(name);
+        viewHolder.layout.setSelected(selectedPos == position);
         viewHolder.mRecruiterImage.setImageURI(pictureUri);
 
-//        applyClickEvents(viewHolder, position);
+        applyClickEvents(viewHolder, position);
     }
 
-    private void applyClickEvents(ReferralAdapter.ViewHolder holder, final int position) {
+    private void applyClickEvents(final ReferralAdapter.ViewHolder holder, final int position) {
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Recruiter recruiter = recruiters.get(position);
                 listener.onRowClicked(recruiters.get(position));
+
+                notifyItemChanged(selectedPos);
+                selectedPos = position;
+                notifyItemChanged(selectedPos);
             }
         });
     }

@@ -76,6 +76,6 @@ public class ReferralActivity extends AppCompatActivity implements ReferralAdapt
 
     @Override
     public void onRowClicked(Recruiter recruiter) {
-        // TODO: Get the requiered data that is going to be send through an email.
+        // TODO: Get the required data that is going to be send through an email.
     }
 }
