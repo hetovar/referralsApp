@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.nearsoft.referralsapp.R;
 import com.nearsoft.referralsapp.Recruiter;
 
@@ -22,7 +23,7 @@ class ReferralAdapter extends RecyclerView.Adapter<ReferralAdapter.ViewHolder>{
         TextView mRecruiterName;
         LinearLayout layout;
         //TODO: Change to fresco container.
-        ImageView mRecruiterImage;
+        SimpleDraweeView mRecruiterImage;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -52,7 +53,7 @@ class ReferralAdapter extends RecyclerView.Adapter<ReferralAdapter.ViewHolder>{
         String pictureUri = recruiters.get(position).getPicture();
 
         viewHolder.mRecruiterName.setText(name);
-        // TODO: Set the picture uri to the imageview holder
+        viewHolder.mRecruiterImage.setImageURI(pictureUri);
 
 //        applyClickEvents(viewHolder, position);
     }

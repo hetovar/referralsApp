@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.nearsoft.referralsapp.ApiClient;
 import com.nearsoft.referralsapp.ApiInterface;
 import com.nearsoft.referralsapp.JobDescription;
@@ -42,6 +43,9 @@ public class JobListingActivity extends AppCompatActivity
         mLayoutManager = new LinearLayoutManager(getApplicationContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
+
+        //Initialization of Fresco.
+        Fresco.initialize(this);
     }
 
     @Override
