@@ -1,6 +1,5 @@
 package com.nearsoft.referralsapp.job_openings;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,7 +16,6 @@ import java.util.ArrayList;
 
 public class JobListingAdapter extends RecyclerView.Adapter<JobListingAdapter.ViewHolder>{
     private ArrayList<NearsoftJob> nearsoftJobs;
-    private Context context;
     private JobListingAdapterListener listener;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -31,9 +29,8 @@ public class JobListingAdapter extends RecyclerView.Adapter<JobListingAdapter.Vi
         }
     }
 
-    public JobListingAdapter(ArrayList<NearsoftJob> nearsoftJobs, Context context, JobListingAdapterListener listener) {
+    public JobListingAdapter(ArrayList<NearsoftJob> nearsoftJobs, JobListingAdapterListener listener) {
         this.nearsoftJobs = nearsoftJobs;
-        this.context = context;
         this.listener = listener;
     }
 

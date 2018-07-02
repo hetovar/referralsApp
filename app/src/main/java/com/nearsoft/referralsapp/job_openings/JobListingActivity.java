@@ -31,11 +31,11 @@ public class JobListingActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.job_listing_activity);
-        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        mRecyclerView = findViewById(R.id.recycler_view);
 
         //TODO: Implement Dagger dependency injection.
 
-        mAdapter = new JobListingAdapter( mNearsoftJobs, this, this);
+        mAdapter = new JobListingAdapter( mNearsoftJobs, this);
 
         mRecyclerView.setHasFixedSize(true);
 

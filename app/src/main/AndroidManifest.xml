@@ -22,9 +22,11 @@
         <activity
             android:name=".job_openings.JobListingActivity"
             android:label="Our Openings" />
-        <activity android:name=".job_details.JobDetailsActivity"
+        <activity
+            android:name=".job_details.JobDetailsActivity"
             android:label="Job Details"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".send_referral.ReferralActivity"></activity>
     </application>
 
 </manifest>
