@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -30,12 +29,9 @@ public class JobListing extends AppCompatActivity {
         setContentView(R.layout.activity_job_listing);
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
-        // Instantiate the RequestQueue.
         mRequestQueue = Volley.newRequestQueue(this);
-        String url ="https://my-json-server.typicode.com/haydeeR/API-test/positions";
 
-        // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, JobsApi.API_URL_GET_JOB_LIST,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
