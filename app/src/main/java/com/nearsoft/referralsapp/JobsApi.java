@@ -1,12 +1,11 @@
 package com.nearsoft.referralsapp;
 
-
-import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.JsonArrayRequest;
+import java.util.ArrayList;
 
 public interface JobsApi {
-    String API_BASE_URL = "https://my-json-server.typicode.com/haydeeR/API-test/";
+    String BASE_URL = "https://my-json-server.typicode.com/haydeeR/API-test/";
+    String JOB_LIST_URL = BASE_URL + "positions";
 
-    String API_URL_GET_JOB_LIST = API_BASE_URL + "positions";
-
-    StringRequest jobEntityList();
+    JsonArrayRequest getRequest();
 }

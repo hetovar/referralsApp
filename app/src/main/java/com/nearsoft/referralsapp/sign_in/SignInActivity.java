@@ -34,6 +34,15 @@ public class SignInActivity extends AppCompatActivity implements SignInActivityC
         SignInActivityBinding binding = DataBindingUtil.setContentView(this, R.layout.sign_in_activity);
         mPresenter = new SignInActivityPresenter(this);
         binding.setPresenter(mPresenter);
+
+        SignInButton signInButton = findViewById(R.id.sign_in_button);
+        signInButton.setSize(SignInButton.SIZE_WIDE);
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
     }
 
     @Override
@@ -101,6 +110,6 @@ public class SignInActivity extends AppCompatActivity implements SignInActivityC
 
     @Override
     public void showJobListingActivity() {
-        Toast.makeText(this, "Sign in Successfully", Toast.LENGTH_SHORT).show();
+        signIn();
     }
 }
