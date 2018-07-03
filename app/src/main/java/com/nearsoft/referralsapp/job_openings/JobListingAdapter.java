@@ -1,6 +1,5 @@
 package com.nearsoft.referralsapp.job_openings;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,25 +14,12 @@ import com.nearsoft.referralsapp.R;
 
 import java.util.ArrayList;
 
-public class JobListingAdapter extends RecyclerView.Adapter<JobListingAdapter.ViewHolder>{
+public class JobListingAdapter extends RecyclerView.Adapter<JobListingAdapter.ViewHolder> {
     private ArrayList<NearsoftJob> nearsoftJobs;
-    private Context context;
     private JobListingAdapterListener listener;
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView mTextView;
-        LinearLayout layout;
-
-        ViewHolder(View itemView) {
-            super(itemView);
-            mTextView = itemView.findViewById(R.id.text);
-            layout = itemView.findViewById(R.id.itemLayout);
-        }
-    }
-
-    public JobListingAdapter(ArrayList<NearsoftJob> nearsoftJobs, Context context, JobListingAdapterListener listener) {
+    JobListingAdapter(ArrayList<NearsoftJob> nearsoftJobs, JobListingAdapterListener listener) {
         this.nearsoftJobs = nearsoftJobs;
-        this.context = context;
         this.listener = listener;
     }
 
@@ -71,5 +57,16 @@ public class JobListingAdapter extends RecyclerView.Adapter<JobListingAdapter.Vi
 
     public interface JobListingAdapterListener {
         void onRowClicked(JobDescription jobDescription);
+    }
+
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView mTextView;
+        LinearLayout layout;
+
+        ViewHolder(View itemView) {
+            super(itemView);
+            mTextView = itemView.findViewById(R.id.text);
+            layout = itemView.findViewById(R.id.itemLayout);
+        }
     }
 }

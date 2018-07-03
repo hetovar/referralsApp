@@ -1,13 +1,12 @@
 package com.nearsoft.referralsapp;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class JobDescription {
-    ArrayList<String> requirements;
-    ArrayList<String> responsibilities;
-    ArrayList<String> skills;
-    ArrayList<String> generals;
+    private ArrayList<String> requirements;
+    private ArrayList<String> responsibilities;
+    private ArrayList<String> skills;
+    private ArrayList<String> generals;
 
     public JobDescription() {
     }
