@@ -2,11 +2,10 @@ package com.nearsoft.referralsapp.sign_in;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -26,13 +25,12 @@ public class SignInActivity extends AppCompatActivity implements SignInActivityC
     private static final String EMAIL_REGEX = "^[a-zA-Z]+@nearsoft.com$";
     private static final int RC_SIGN_IN = 9001;
     private GoogleSignInClient mGoogleSignInClient;
-    private SignInActivityPresenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SignInActivityBinding binding = DataBindingUtil.setContentView(this, R.layout.sign_in_activity);
-        mPresenter = new SignInActivityPresenter(this);
+        SignInActivityPresenter mPresenter = new SignInActivityPresenter(this);
         binding.setPresenter(mPresenter);
 
         SignInButton signInButton = findViewById(R.id.sign_in_button);
@@ -58,10 +56,10 @@ public class SignInActivity extends AppCompatActivity implements SignInActivityC
             String email = account.getEmail();
             if (email != null && email.matches(EMAIL_REGEX)) {
                 startActivity(new Intent(this, JobListing.class));
-                Toast.makeText(this, "Sign in Successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.SignInSuccess, Toast.LENGTH_SHORT).show();
                 finish();
             } else {
-                Toast.makeText(this, "Not a nearsoftian email", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.SingInFailure, Toast.LENGTH_SHORT).show();
                 signOut();
             }
         }
@@ -97,7 +95,7 @@ public class SignInActivity extends AppCompatActivity implements SignInActivityC
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             updateUI(account);
         } catch (ApiException e) {
-            Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
+            Log.e(TAG, "signInResult:failed code=" + e.getStatusCode(), e);
             updateUI(null);
         }
     }

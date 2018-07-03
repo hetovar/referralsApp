@@ -1,7 +1,7 @@
 package com.nearsoft.referralsapp;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
@@ -14,32 +14,34 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class JobsApiImpl implements JobsApi {
+    private static final String FIELD_NAME = "name";
     private final Context context;
     private final JobsView jobsView;
 
-    public JobsApiImpl(Context context, JobsView jobsView) {
+    JobsApiImpl(Context context, JobsView jobsView) {
         this.context = context;
         this.jobsView = jobsView;
     }
 
     @Override
     public JsonArrayRequest getRequest() {
-        JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(
+        return new JsonArrayRequest(
                 Request.Method.GET, JOB_LIST_URL, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 try {
-                    ArrayList<String> jobs = new ArrayList<>();
+                    List<String> jobs = new LinkedList<>();
                     for (int i = 0; i < response.length(); i++) {
-                        JSONObject jsonObject1 = response.getJSONObject(i);
-                        jobs.add(jsonObject1.optString("name"));
+                        JSONObject job = response.getJSONObject(i);
+                        jobs.add(job.optString(FIELD_NAME));
                     }
                     jobsView.updateJobs(jobs);
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Log.e("JsonException", "Could not parse jobs.", e);
                 }
             }
         }, new Response.ErrorListener() {
@@ -52,7 +54,5 @@ public class JobsApiImpl implements JobsApi {
                 }
             }
         });
-
-        return jsonObjectRequest;
     }
 }

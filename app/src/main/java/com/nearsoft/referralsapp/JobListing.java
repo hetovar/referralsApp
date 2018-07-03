@@ -8,12 +8,11 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class JobListing extends AppCompatActivity implements JobsView{
     private RequestQueue mRequestQueue;
     private static final String TAG = "TAG";
-    private RecyclerView mRecyclerView;
-    private LinearLayoutManager mLayoutManager;
     private ArrayList<String> jobs = new ArrayList<>();
     private RecyclerView.Adapter mAdapter;
 
@@ -21,19 +20,19 @@ public class JobListing extends AppCompatActivity implements JobsView{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_job_listing);
-        mRecyclerView = findViewById(R.id.recycler_view);
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
         mRequestQueue = Volley.newRequestQueue(this);
 
         JobsApiImpl jobsApi = new JobsApiImpl(this, this);
 
         mRequestQueue.add(jobsApi.getRequest());
 
-        mRecyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(true);
 
         mAdapter = new JobListingAdapter(jobs);
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(mAdapter);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(mAdapter);
     }
 
     @Override
@@ -45,7 +44,7 @@ public class JobListing extends AppCompatActivity implements JobsView{
     }
 
     @Override
-    public void updateJobs(ArrayList<String> dataSet) {
+    public void updateJobs(List<String> dataSet) {
         jobs.clear();
         jobs.addAll(dataSet);
         mAdapter.notifyDataSetChanged();

@@ -1,7 +1,7 @@
 package com.nearsoft.referralsapp;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public interface JobsView {
-    void updateJobs(ArrayList<String> dataSet);
+    void updateJobs(List<String> dataSet);
 }
