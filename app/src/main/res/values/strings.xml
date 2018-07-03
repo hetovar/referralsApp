@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">ReferralsApp</string>
-    <string name="SignInSuccess">Sign in Successfully</string>
-    <string name="SingInFailure">Not a nearsoftian email</string>
+
+    <string name="sing_in_failure">Not a nearsoftian email</string>
 </resources>
