@@ -98,7 +98,6 @@ public class SignInActivity extends AppCompatActivity implements SignInActivityC
 
     @Override
     public void signOut() {
-        Toast.makeText(this, "You were sign out", Toast.LENGTH_SHORT).show();
         mGoogleSignInClient.signOut();
     }
 }
