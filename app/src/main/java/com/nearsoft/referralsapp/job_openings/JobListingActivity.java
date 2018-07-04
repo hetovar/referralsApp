@@ -79,15 +79,19 @@ public class JobListingActivity extends AppCompatActivity
     @Override
     public void onRowClicked(JobDescription jobDescription) {
         Intent intent = new Intent(this, JobDetailsActivity.class);
-
-        if (jobDescription.getRequirements() != null)
-            intent.putExtra(REQUIREMENTS, jobDescription.getRequirements());
-        if (jobDescription.getResponsibilities() != null)
-            intent.putExtra(RESPONSIBILITIES, jobDescription.getResponsibilities());
-        if (jobDescription.getSkills() != null)
-            intent.putExtra(SKILLS, jobDescription.getSkills());
-        if (jobDescription.getGenerals() != null)
-            intent.putExtra(GENERALS, jobDescription.getGenerals());
+        sendDataToActivity(jobDescription, intent);
         startActivity(intent);
+    }
+
+    private void sendDataToActivity(JobDescription jobDescription, Intent intent) {
+        putIfNonNull(intent, jobDescription.getRequirements(), REQUIREMENTS);
+        putIfNonNull(intent, jobDescription.getResponsibilities(), RESPONSIBILITIES);
+        putIfNonNull(intent, jobDescription.getSkills(), SKILLS);
+        putIfNonNull(intent, jobDescription.getGenerals(), GENERALS);
+    }
+
+    private void putIfNonNull(Intent intent, ArrayList<String> params, String tag) {
+        if (params != null)
+            intent.putExtra(tag, params);
     }
 }

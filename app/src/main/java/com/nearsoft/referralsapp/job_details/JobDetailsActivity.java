@@ -39,14 +39,12 @@ public class JobDetailsActivity extends AppCompatActivity {
     private void FillDescription() {
         mTitle = new ArrayList<>(Objects.requireNonNull(getIntent().getExtras()).keySet());
 
-        StringBuilder description = new StringBuilder();
-
         for (String key : mTitle) {
+            StringBuilder description = new StringBuilder();
             for (String value : getIntent().getStringArrayListExtra(key)) {
-                description.append("* ").append(value).append("\n");
+                description.append("* ").append(value).append(System.getProperty("line.separator"));
             }
             mJobDescription.add(description.toString());
-            description = new StringBuilder();
         }
     }
 }
