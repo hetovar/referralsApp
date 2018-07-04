@@ -1,39 +1,23 @@
 package com.nearsoft.referralsapp.job_details;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.nearsoft.referralsapp.R;
 
 import java.util.ArrayList;
 
 public class JobDetailAdapter extends RecyclerView.Adapter<JobDetailAdapter.ViewHolder> {
     private ArrayList<String> jobDescription;
-    private Context context;
     private ArrayList<String> mTitle;
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView mTitle;
-        TextView mDescription;
-        LinearLayout layout;
-
-        ViewHolder(View itemView) {
-            super(itemView);
-            mTitle = itemView.findViewById(R.id.textTitle);
-            mDescription = itemView.findViewById(R.id.textDescription);
-            layout = itemView.findViewById(R.id.detailLayout);
-        }
-    }
-
-    public JobDetailAdapter(ArrayList<String> jobDescription, Context context, ArrayList<String> mTitle) {
+    JobDetailAdapter(ArrayList<String> jobDescription, ArrayList<String> mTitle) {
         this.jobDescription = jobDescription;
-        this.context = context;
         this.mTitle = mTitle;
     }
 
@@ -55,5 +39,18 @@ public class JobDetailAdapter extends RecyclerView.Adapter<JobDetailAdapter.View
     @Override
     public int getItemCount() {
         return mTitle.size();
+    }
+
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView mTitle;
+        TextView mDescription;
+        LinearLayout layout;
+
+        ViewHolder(View itemView) {
+            super(itemView);
+            mTitle = itemView.findViewById(R.id.textTitle);
+            mDescription = itemView.findViewById(R.id.textDescription);
+            layout = itemView.findViewById(R.id.detailLayout);
+        }
     }
 }

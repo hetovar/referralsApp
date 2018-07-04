@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -33,7 +32,7 @@ class ReferralAdapter extends RecyclerView.Adapter<ReferralAdapter.ViewHolder>{
         }
     }
 
-    public ReferralAdapter(ArrayList<Recruiter> recruiters, ReferralAdapterListener listener) {
+    ReferralAdapter(ArrayList<Recruiter> recruiters, ReferralAdapterListener listener) {
         this.recruiters = recruiters;
         this.listener = listener;
     }

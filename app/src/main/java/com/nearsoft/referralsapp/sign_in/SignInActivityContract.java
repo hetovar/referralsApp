@@ -8,7 +8,6 @@ public interface SignInActivityContract {
     interface SingInView{
         void startHomeActivity();
         void startAccountsActivity();
-        void displaySignInSuccessMessage();
         void displaySignInErrorMessage();
         void checkPreviousSignIn();
         void signOut();

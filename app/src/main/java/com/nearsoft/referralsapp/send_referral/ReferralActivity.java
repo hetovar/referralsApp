@@ -1,11 +1,10 @@
 package com.nearsoft.referralsapp.send_referral;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.Button;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import com.nearsoft.referralsapp.ApiClient;
@@ -19,29 +18,23 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ReferralActivity extends AppCompatActivity implements ReferralAdapter.ReferralAdapterListener{
-    private Switch mStrongReferralSwitch;
-    private RecyclerView mRecyclerView;
-    private Button mSendReferralButton;
+public class ReferralActivity extends AppCompatActivity implements ReferralAdapter.ReferralAdapterListener {
     private ReferralAdapter mAdapter;
     private ArrayList<Recruiter> recruiters = new ArrayList<>();
-    private LinearLayoutManager mLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.referral_activity);
 
-        mRecyclerView = findViewById(R.id.recycler_view);
-        mStrongReferralSwitch = findViewById(R.id.switch_strong_referral);
-        mSendReferralButton = findViewById(R.id.send_referral_button);
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
 
         mAdapter = new ReferralAdapter(recruiters, this);
 
-        mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(mAdapter);
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(mAdapter);
     }
 
     @Override
@@ -56,15 +49,17 @@ public class ReferralActivity extends AppCompatActivity implements ReferralAdapt
         Call<ArrayList<Recruiter>> call = apiService.getRecruiter();
         call.enqueue(new Callback<ArrayList<Recruiter>>() {
             @Override
-            public void onResponse(Call<ArrayList<Recruiter>> call, Response<ArrayList<Recruiter>> response) {
+            public void onResponse(@NonNull Call<ArrayList<Recruiter>> call,
+                                   @NonNull Response<ArrayList<Recruiter>> response) {
                 recruiters.clear();
                 recruiters.addAll(response.body());
                 mAdapter.notifyDataSetChanged();
             }
 
             @Override
-            public void onFailure(Call<ArrayList<Recruiter>> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
+            public void onFailure(@NonNull Call<ArrayList<Recruiter>> call, @NonNull Throwable t) {
+                Toast.makeText(getApplicationContext()
+                        , "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }

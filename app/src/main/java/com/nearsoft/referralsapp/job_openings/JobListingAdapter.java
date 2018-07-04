@@ -29,7 +29,7 @@ public class JobListingAdapter extends RecyclerView.Adapter<JobListingAdapter.Vi
         }
     }
 
-    public JobListingAdapter(ArrayList<NearsoftJob> nearsoftJobs, JobListingAdapterListener listener) {
+    JobListingAdapter(ArrayList<NearsoftJob> nearsoftJobs, JobListingAdapterListener listener) {
         this.nearsoftJobs = nearsoftJobs;
         this.listener = listener;
     }

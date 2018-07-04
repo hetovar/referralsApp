@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">ReferralsApp</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="not_a_nearsoft_email">Not a nearsoftian email</string>
 </resources>

@@ -1,8 +1,9 @@
 package com.nearsoft.referralsapp.job_openings;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
@@ -22,9 +23,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class JobListingActivity extends AppCompatActivity
-        implements JobListingAdapter.JobListingAdapterListener{
-    private RecyclerView mRecyclerView;
-    private LinearLayoutManager mLayoutManager;
+        implements JobListingAdapter.JobListingAdapterListener {
     private ArrayList<NearsoftJob> mNearsoftJobs = new ArrayList<>();
     private JobListingAdapter mAdapter;
 
@@ -32,17 +31,17 @@ public class JobListingActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.job_listing_activity);
-        mRecyclerView = findViewById(R.id.recycler_view);
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
 
         //TODO: Implement Dagger dependency injection.
 
-        mAdapter = new JobListingAdapter( mNearsoftJobs, this);
+        mAdapter = new JobListingAdapter(mNearsoftJobs, this);
 
-        mRecyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(true);
 
-        mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(mAdapter);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(mAdapter);
 
         //Initialization of Fresco.
         Fresco.initialize(this);
@@ -60,14 +59,15 @@ public class JobListingActivity extends AppCompatActivity
         Call<ArrayList<NearsoftJob>> call = apiService.getJob();
         call.enqueue(new Callback<ArrayList<NearsoftJob>>() {
             @Override
-            public void onResponse(Call<ArrayList<NearsoftJob>> call, Response<ArrayList<NearsoftJob>> response) {
+            public void onResponse(@NonNull Call<ArrayList<NearsoftJob>> call,
+                                   @NonNull Response<ArrayList<NearsoftJob>> response) {
                 mNearsoftJobs.clear();
                 mNearsoftJobs.addAll(response.body());
                 mAdapter.notifyDataSetChanged();
             }
 
             @Override
-            public void onFailure(Call<ArrayList<NearsoftJob>> call, Throwable t) {
+            public void onFailure(@NonNull Call<ArrayList<NearsoftJob>> call, @NonNull Throwable t) {
                 Toast.makeText(getApplicationContext(), "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
@@ -82,13 +82,13 @@ public class JobListingActivity extends AppCompatActivity
     public void onRowClicked(JobDescription jobDescription) {
         Intent intent = new Intent(this, JobDetailsActivity.class);
 
-        if(jobDescription.getRequirements() != null)
+        if (jobDescription.getRequirements() != null)
             intent.putExtra("Requirements", jobDescription.getRequirements());
-        if(jobDescription.getResponsibilities() != null)
+        if (jobDescription.getResponsibilities() != null)
             intent.putExtra("Responsibilities", jobDescription.getResponsibilities());
-        if(jobDescription.getSkills() != null)
+        if (jobDescription.getSkills() != null)
             intent.putExtra("Skills", jobDescription.getSkills());
-        if(jobDescription.getGenerals() != null)
+        if (jobDescription.getGenerals() != null)
             intent.putExtra("Generals", jobDescription.getGenerals());
         startActivity(intent);
     }
