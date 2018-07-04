@@ -63,7 +63,7 @@ public class SignInActivity extends AppCompatActivity implements SignInActivityC
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             mPresenter.checkGoogleAccount(account);
         } catch (ApiException e) {
-            Log.e(TAG, "signInResult:failed code=" + e.getStatusCode());
+            Log.e(TAG, "signInResult:failed code=" + e.getStatusCode(), e);
         }
     }
 
