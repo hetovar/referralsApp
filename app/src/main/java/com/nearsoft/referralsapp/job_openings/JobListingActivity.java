@@ -17,6 +17,7 @@ import com.nearsoft.referralsapp.R;
 import com.nearsoft.referralsapp.job_details.JobDetailsActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -24,6 +25,7 @@ import retrofit2.Response;
 
 public class JobListingActivity extends AppCompatActivity
         implements JobListingAdapter.JobListingAdapterListener {
+    public static final String JOBDESCRIPTION = "JOBDESCRIPTION";
     private ArrayList<NearsoftJob> mNearsoftJobs = new ArrayList<>();
     private JobListingAdapter mAdapter;
 
@@ -43,7 +45,6 @@ public class JobListingActivity extends AppCompatActivity
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(mAdapter);
 
-        //Initialization of Fresco.
         Fresco.initialize(this);
     }
 
@@ -56,18 +57,18 @@ public class JobListingActivity extends AppCompatActivity
     private void getJobs() {
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
-        Call<ArrayList<NearsoftJob>> call = apiService.getJob();
-        call.enqueue(new Callback<ArrayList<NearsoftJob>>() {
+        Call<List<NearsoftJob>> call = apiService.getJob();
+        call.enqueue(new Callback<List<NearsoftJob>>() {
             @Override
-            public void onResponse(@NonNull Call<ArrayList<NearsoftJob>> call,
-                                   @NonNull Response<ArrayList<NearsoftJob>> response) {
+            public void onResponse(@NonNull Call<List<NearsoftJob>> call,
+                                   @NonNull Response<List<NearsoftJob>> response) {
                 mNearsoftJobs.clear();
                 mNearsoftJobs.addAll(response.body());
                 mAdapter.notifyDataSetChanged();
             }
 
             @Override
-            public void onFailure(@NonNull Call<ArrayList<NearsoftJob>> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<List<NearsoftJob>> call, @NonNull Throwable t) {
                 Toast.makeText(getApplicationContext(), "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
@@ -81,15 +82,7 @@ public class JobListingActivity extends AppCompatActivity
     @Override
     public void onRowClicked(JobDescription jobDescription) {
         Intent intent = new Intent(this, JobDetailsActivity.class);
-
-        if (jobDescription.getRequirements() != null)
-            intent.putExtra("Requirements", jobDescription.getRequirements());
-        if (jobDescription.getResponsibilities() != null)
-            intent.putExtra("Responsibilities", jobDescription.getResponsibilities());
-        if (jobDescription.getSkills() != null)
-            intent.putExtra("Skills", jobDescription.getSkills());
-        if (jobDescription.getGenerals() != null)
-            intent.putExtra("Generals", jobDescription.getGenerals());
+        intent.putExtra(JOBDESCRIPTION, jobDescription);
         startActivity(intent);
     }
 }

@@ -1,46 +1,46 @@
 package com.nearsoft.referralsapp;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.List;
 
-public class JobDescription {
-    ArrayList<String> requirements;
-    ArrayList<String> responsibilities;
-    ArrayList<String> skills;
-    ArrayList<String> generals;
+public class JobDescription implements Serializable {
+    private List<String> requirements;
+    private List<String> responsibilities;
+    private List<String> skills;
+    private List<String> generals;
 
     public JobDescription() {
     }
 
-    public ArrayList<String> getRequirements() {
+    public List<String> getRequirements() {
         return requirements;
     }
 
-    public void setRequirements(ArrayList<String> requirements) {
+    public void setRequirements(List<String> requirements) {
         this.requirements = requirements;
     }
 
-    public ArrayList<String> getResponsibilities() {
+    public List<String> getResponsibilities() {
         return responsibilities;
     }
 
-    public void setResponsibilities(ArrayList<String> responsibilities) {
+    public void setResponsibilities(List<String> responsibilities) {
         this.responsibilities = responsibilities;
     }
 
-    public ArrayList<String> getSkills() {
+    public List<String> getSkills() {
         return skills;
     }
 
-    public void setSkills(ArrayList<String> skills) {
+    public void setSkills(List<String> skills) {
         this.skills = skills;
     }
 
-    public ArrayList<String> getGenerals() {
+    public List<String> getGenerals() {
         return generals;
     }
 
-    public void setGenerals(ArrayList<String> generals) {
+    public void setGenerals(List<String> generals) {
         this.generals = generals;
     }
 }

@@ -2,4 +2,8 @@
     <string name="app_name">ReferralsApp</string>
 
     <string name="not_a_nearsoft_email">Not a nearsoftian email</string>
+    <string name="generals">Generals</string>
+    <string name="responsibilities">Responsibilities</string>
+    <string name="requirements">Requirements</string>
+    <string name="skills">Skills</string>
 </resources>

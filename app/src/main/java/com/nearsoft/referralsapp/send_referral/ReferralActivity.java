@@ -13,6 +13,7 @@ import com.nearsoft.referralsapp.R;
 import com.nearsoft.referralsapp.Recruiter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -46,18 +47,18 @@ public class ReferralActivity extends AppCompatActivity implements ReferralAdapt
     private void getRecruiters() {
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
-        Call<ArrayList<Recruiter>> call = apiService.getRecruiter();
-        call.enqueue(new Callback<ArrayList<Recruiter>>() {
+        Call<List<Recruiter>> call = apiService.getRecruiter();
+        call.enqueue(new Callback<List<Recruiter>>() {
             @Override
-            public void onResponse(@NonNull Call<ArrayList<Recruiter>> call,
-                                   @NonNull Response<ArrayList<Recruiter>> response) {
+            public void onResponse(@NonNull Call<List<Recruiter>> call,
+                                   @NonNull Response<List<Recruiter>> response) {
                 recruiters.clear();
                 recruiters.addAll(response.body());
                 mAdapter.notifyDataSetChanged();
             }
 
             @Override
-            public void onFailure(@NonNull Call<ArrayList<Recruiter>> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<List<Recruiter>> call, @NonNull Throwable t) {
                 Toast.makeText(getApplicationContext()
                         , "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
