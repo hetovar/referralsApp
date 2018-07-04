@@ -5,6 +5,10 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.nearsoft.referralsapp.ApiClient;
@@ -29,6 +33,10 @@ public class ReferralActivity extends AppCompatActivity implements ReferralAdapt
         setContentView(R.layout.referral_activity);
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        Switch switchStrongReferral = findViewById(R.id.switch_strong_referral);
+        final EditText editTextWhen = findViewById(R.id.when_edit_text);
+        final EditText editTextWhere = findViewById(R.id.where_edit_text);
+        final EditText editTextWhy = findViewById(R.id.why_edit_text);
 
         mAdapter = new ReferralAdapter(recruiters, this);
 
@@ -36,6 +44,21 @@ public class ReferralActivity extends AppCompatActivity implements ReferralAdapt
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(mAdapter);
+
+        switchStrongReferral.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    editTextWhen.setVisibility(View.VISIBLE);
+                    editTextWhere.setVisibility(View.VISIBLE);
+                    editTextWhy.setVisibility(View.VISIBLE);
+                }else{
+                    editTextWhen.setVisibility(View.INVISIBLE);
+                    editTextWhere.setVisibility(View.INVISIBLE);
+                    editTextWhy.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
     }
 
     @Override

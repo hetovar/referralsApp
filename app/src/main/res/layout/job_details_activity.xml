@@ -21,8 +21,8 @@
         android:text="Contact"
         android:textSize="20sp"
         android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@+id/recycler_view"
-        android:background="@color/ColorNearsoftPrimary"/>
+        android:background="@color/ColorNearsoftPrimary"
+        app:layout_constraintTop_toBottomOf="@+id/recycler_view"/>
 
     <EditText
         app:layout_constraintTop_toBottomOf="@id/contact_text_view"

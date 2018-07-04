@@ -39,6 +39,10 @@
         android:id="@+id/when_edit_text"
         android:hint="When did you worked with him/her?"
         android:visibility="invisible"
+        android:imeOptions="actionNext"
+        android:maxLines="1"
+        android:inputType="text"
+        android:nextFocusDown="@id/where_edit_text"
         app:layout_constraintTop_toBottomOf="@id/strong_referral_text_view"/>
 
     <EditText
@@ -47,6 +51,10 @@
         android:id="@+id/where_edit_text"
         android:hint="Where did you worked with him/her?"
         android:visibility="invisible"
+        android:imeOptions="actionNext"
+        android:maxLines="1"
+        android:inputType="text"
+        android:nextFocusDown="@id/why_edit_text"
         app:layout_constraintTop_toBottomOf="@id/when_edit_text"/>
 
     <EditText
@@ -55,6 +63,9 @@
         android:id="@+id/why_edit_text"
         android:hint="Why do you recommend him/her?"
         android:visibility="invisible"
+        android:imeOptions="actionDone"
+        android:maxLines="1"
+        android:inputType="text"
         app:layout_constraintTop_toBottomOf="@id/where_edit_text"/>
 
     <Button
