@@ -1,11 +1,14 @@
 package com.nearsoft.referralsapp;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
 
 public interface ApiInterface {
     @GET("jobs")
-    Call<ArrayList<NearsoftJob>> getJob();
+    Call<List<NearsoftJob>> getJob();
+
+    @GET("recruiters")
+    Call<List<Recruiter>> getRecruiter();
 }

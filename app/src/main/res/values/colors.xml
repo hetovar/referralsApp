@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#EE3300</color>
     <color name="ColorNearsoftPrimary">#FF5500</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="row_activated">#e0e0e0</color>
 </resources>

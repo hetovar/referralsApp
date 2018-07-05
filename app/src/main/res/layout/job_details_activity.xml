@@ -12,7 +12,7 @@
         android:scrollbars="vertical"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintHeight_percent="0.6"/>
+        app:layout_constraintHeight_percent="0.7"/>
 
     <TextView
         android:id="@+id/contact_text_view"
@@ -21,8 +21,8 @@
         android:text="Contact"
         android:textSize="20sp"
         android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@+id/recycler_view"
-        android:background="@color/ColorNearsoftPrimary"/>
+        android:background="@color/ColorNearsoftPrimary"
+        app:layout_constraintTop_toBottomOf="@+id/recycler_view"/>
 
     <EditText
         app:layout_constraintTop_toBottomOf="@id/contact_text_view"
@@ -45,20 +45,12 @@
         android:inputType="textEmailAddress"
         android:nextFocusDown="@id/name_edit_text"
         android:hint="Email"/>
-
-    <EditText
-        app:layout_constraintTop_toBottomOf="@id/email_edit_text"
-        android:id="@+id/resume_edit_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:imeOptions="actionDone"
-        android:hint="Resume"
-        />
     
     <Button
+        android:id="@+id/refer_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/resume_edit_text"
+        app:layout_constraintTop_toBottomOf="@id/email_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Referral"/>

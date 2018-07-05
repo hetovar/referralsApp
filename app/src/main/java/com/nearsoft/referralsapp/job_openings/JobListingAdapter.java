@@ -14,9 +14,20 @@ import com.nearsoft.referralsapp.R;
 
 import java.util.ArrayList;
 
-public class JobListingAdapter extends RecyclerView.Adapter<JobListingAdapter.ViewHolder> {
+public class JobListingAdapter extends RecyclerView.Adapter<JobListingAdapter.ViewHolder>{
     private ArrayList<NearsoftJob> nearsoftJobs;
     private JobListingAdapterListener listener;
+
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView mTextView;
+        LinearLayout layout;
+
+        ViewHolder(View itemView) {
+            super(itemView);
+            mTextView = itemView.findViewById(R.id.text);
+            layout = itemView.findViewById(R.id.itemLayout);
+        }
+    }
 
     JobListingAdapter(ArrayList<NearsoftJob> nearsoftJobs, JobListingAdapterListener listener) {
         this.nearsoftJobs = nearsoftJobs;
@@ -57,16 +68,5 @@ public class JobListingAdapter extends RecyclerView.Adapter<JobListingAdapter.Vi
 
     public interface JobListingAdapterListener {
         void onRowClicked(JobDescription jobDescription);
-    }
-
-    static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView mTextView;
-        LinearLayout layout;
-
-        ViewHolder(View itemView) {
-            super(itemView);
-            mTextView = itemView.findViewById(R.id.text);
-            layout = itemView.findViewById(R.id.itemLayout);
-        }
     }
 }
