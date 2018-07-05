@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -26,6 +27,10 @@ import java.util.List;
 public class JobDetailsActivity extends AppCompatActivity {
 
     private static final int RESUME_FILE_CODE = 9002;
+    public static final String CONTACT_NAME = "CONTACT_NAME";
+    public static final String CONTACT_EMAIL = "CONTACT_EMAIL";
+    public static final String RESUME_URI = "RESUME_URI";
+    private Uri resumeUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +50,16 @@ public class JobDetailsActivity extends AppCompatActivity {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), ReferralActivity.class));
+                Intent referralActivityIntent = new Intent();
+
+                EditText contactNameEditText = findViewById(R.id.name_edit_text);
+                EditText contactEmailEditText = findViewById(R.id.email_edit_text);
+
+                referralActivityIntent.putExtra(CONTACT_NAME, contactNameEditText.getText());
+                referralActivityIntent.putExtra(CONTACT_EMAIL, contactEmailEditText.getText());
+                referralActivityIntent.putExtra(RESUME_URI, resumeUri);
+
+                startActivity(referralActivityIntent);
             }
         });
 
@@ -66,9 +80,9 @@ public class JobDetailsActivity extends AppCompatActivity {
         switch (requestCode){
             case RESUME_FILE_CODE:
                 if(resultCode == RESULT_OK){
-                    Uri returnUri = data.getData();
+                    resumeUri = data.getData();
 
-                    Cursor returnCursor = getContentResolver().query(returnUri, null,
+                    Cursor returnCursor = getContentResolver().query(resumeUri, null,
                             null, null, null);
                     int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
                     returnCursor.moveToFirst();
