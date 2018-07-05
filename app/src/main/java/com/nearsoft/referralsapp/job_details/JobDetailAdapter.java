@@ -14,9 +14,9 @@ import java.util.ArrayList;
 
 public class JobDetailAdapter extends RecyclerView.Adapter<JobDetailAdapter.ViewHolder> {
     private ArrayList<String> jobDescription;
-    private ArrayList<String> mTitle;
+    private ArrayList<Integer> mTitle;
 
-    JobDetailAdapter(ArrayList<String> jobDescription, ArrayList<String> mTitle) {
+    JobDetailAdapter(ArrayList<String> jobDescription, ArrayList<Integer> mTitle) {
         this.jobDescription = jobDescription;
         this.mTitle = mTitle;
     }

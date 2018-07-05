@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.nearsoft.referralsapp.ApiClient;
 import com.nearsoft.referralsapp.ApiInterface;
 import com.nearsoft.referralsapp.JobDescription;
@@ -16,6 +17,7 @@ import com.nearsoft.referralsapp.R;
 import com.nearsoft.referralsapp.job_details.JobDetailsActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -23,11 +25,7 @@ import retrofit2.Response;
 
 public class JobListingActivity extends AppCompatActivity
         implements JobListingAdapter.JobListingAdapterListener {
-    public static final String REQUIREMENTS = "Requirements";
-    public static final String
-            RESPONSIBILITIES = "Responsibilities";
-    public static final String SKILLS = "Skills";
-    public static final String GENERALS = "Generals";
+    public static final String JOBDESCRIPTION = "JOBDESCRIPTION";
     private ArrayList<NearsoftJob> mNearsoftJobs = new ArrayList<>();
     private JobListingAdapter mAdapter;
 
@@ -35,15 +33,19 @@ public class JobListingActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.job_listing_activity);
-        RecyclerView mRecyclerView = findViewById(R.id.recycler_view);
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+
+        //TODO: Implement Dagger dependency injection.
 
         mAdapter = new JobListingAdapter(mNearsoftJobs, this);
 
-        mRecyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(true);
 
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(mAdapter);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(mAdapter);
+
+        Fresco.initialize(this);
     }
 
     @Override
@@ -55,17 +57,18 @@ public class JobListingActivity extends AppCompatActivity
     private void getJobs() {
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
-        Call<ArrayList<NearsoftJob>> call = apiService.getJob();
-        call.enqueue(new Callback<ArrayList<NearsoftJob>>() {
+        Call<List<NearsoftJob>> call = apiService.getJob();
+        call.enqueue(new Callback<List<NearsoftJob>>() {
             @Override
-            public void onResponse(@NonNull Call<ArrayList<NearsoftJob>> call, @NonNull Response<ArrayList<NearsoftJob>> response) {
+            public void onResponse(@NonNull Call<List<NearsoftJob>> call,
+                                   @NonNull Response<List<NearsoftJob>> response) {
                 mNearsoftJobs.clear();
                 mNearsoftJobs.addAll(response.body());
                 mAdapter.notifyDataSetChanged();
             }
 
             @Override
-            public void onFailure(@NonNull Call<ArrayList<NearsoftJob>> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<List<NearsoftJob>> call, @NonNull Throwable t) {
                 Toast.makeText(getApplicationContext(), "Unable to fetch json: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
@@ -79,19 +82,7 @@ public class JobListingActivity extends AppCompatActivity
     @Override
     public void onRowClicked(JobDescription jobDescription) {
         Intent intent = new Intent(this, JobDetailsActivity.class);
-        sendDataToActivity(jobDescription, intent);
+        intent.putExtra(JOBDESCRIPTION, jobDescription);
         startActivity(intent);
-    }
-
-    private void sendDataToActivity(JobDescription jobDescription, Intent intent) {
-        putIfNonNull(intent, jobDescription.getRequirements(), REQUIREMENTS);
-        putIfNonNull(intent, jobDescription.getResponsibilities(), RESPONSIBILITIES);
-        putIfNonNull(intent, jobDescription.getSkills(), SKILLS);
-        putIfNonNull(intent, jobDescription.getGenerals(), GENERALS);
-    }
-
-    private void putIfNonNull(Intent intent, ArrayList<String> params, String tag) {
-        if (params != null)
-            intent.putExtra(tag, params);
     }
 }

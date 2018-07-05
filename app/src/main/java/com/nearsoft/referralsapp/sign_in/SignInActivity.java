@@ -70,7 +70,6 @@ public class SignInActivity extends AppCompatActivity implements SignInActivityC
     @Override
     protected void onStop() {
         super.onStop();
-
         mPresenter = null;
     }
 
@@ -88,7 +87,7 @@ public class SignInActivity extends AppCompatActivity implements SignInActivityC
 
     @Override
     public void displaySignInErrorMessage() {
-        Toast.makeText(this, R.string.sing_in_failure, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.not_a_nearsoft_email, Toast.LENGTH_SHORT).show();
     }
 
     @Override
