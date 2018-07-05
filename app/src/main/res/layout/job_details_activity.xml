@@ -55,26 +55,55 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         app:layout_constraintTop_toBottomOf="@id/email_edit_text">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Resume"
+            android:text="Attach Resume"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"/>
 
         <ImageButton
             android:id="@+id/attach_file_button"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/ic_attach_file"
             android:background="?selectableItemBackgroundBorderless"
             app:layout_constraintRight_toRightOf="parent"
-            android:src="@drawable/ic_attach_file"
-            tools:targetApi="lollipop" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/file_attachment_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#EEE"
+            android:visibility="invisible"
+            app:layout_constraintTop_toBottomOf="@id/attach_file_button">
+
+            <ImageView
+                android:id="@+id/pdf_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_pdf_file"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <TextView
+                android:id="@+id/resume_text_view"
+                android:text="File Name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toRightOf="@+id/pdf_image"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </android.support.constraint.ConstraintLayout>
 
     </android.support.constraint.ConstraintLayout>
 
