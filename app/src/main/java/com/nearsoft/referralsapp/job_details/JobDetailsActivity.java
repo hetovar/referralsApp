@@ -10,41 +10,33 @@ import android.support.v7.widget.RecyclerView;
 import com.nearsoft.referralsapp.R;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class JobDetailsActivity extends AppCompatActivity {
-    private ArrayList<String> mJobDescription = new ArrayList<>();
-    private ArrayList<String> mTitle;
-
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.job_details_activity);
 
-        FillDescription();
-
-        JobDetailAdapter mAdapter = new JobDetailAdapter(mJobDescription, mTitle);
+        JobDetailAdapter detailAdapter = fillDescription();
 
         RecyclerView mRecyclerView = findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(mAdapter);
-
-        FillDescription();
+        mRecyclerView.setAdapter(detailAdapter);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void FillDescription() {
-        mTitle = new ArrayList<>(Objects.requireNonNull(getIntent().getExtras()).keySet());
+    private JobDetailAdapter fillDescription() {
+        ArrayList<String> title = new ArrayList<>((getIntent().getExtras()).keySet());
+        ArrayList<String> jobDescriptions = new ArrayList<>();
 
-        for (String key : mTitle) {
+        for (String key : title) {
             StringBuilder description = new StringBuilder();
             for (String value : getIntent().getStringArrayListExtra(key)) {
                 description.append("* ").append(value).append(System.getProperty("line.separator"));
             }
-            mJobDescription.add(description.toString());
+            jobDescriptions.add(description.toString());
         }
+        return new JobDetailAdapter(jobDescriptions, title);
     }
 }
