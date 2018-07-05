@@ -24,8 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JobDetailsActivity extends AppCompatActivity {
-    private ArrayList<String> mJobDescription = new ArrayList<>();
-    private ArrayList<Integer> mTitle = new ArrayList<>();
 
     private static final int RESUME_FILE_CODE = 9002;
 
@@ -34,9 +32,7 @@ public class JobDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.job_details_activity);
 
-        FillDescription();
-
-        JobDetailAdapter adapter = new JobDetailAdapter(mJobDescription, mTitle);
+        JobDetailAdapter adapter = fillDescription();
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
@@ -86,26 +82,31 @@ public class JobDetailsActivity extends AppCompatActivity {
         }
     }
 
-    private void FillDescription() {
+    private JobDetailAdapter fillDescription() {
+        ArrayList<String> jobDescriptions = new ArrayList<>();
+        ArrayList<Integer> title = new ArrayList<>();
+
         JobDescription jobDescription =
                 (JobDescription) getIntent().getSerializableExtra(JobListingActivity.JOBDESCRIPTION);
 
         if (jobDescription.getGenerals() != null) {
-            mTitle.add(R.string.generals);
-            mJobDescription.add(getFormattedString(jobDescription.getGenerals()));
+            title.add(R.string.generals);
+            jobDescriptions.add(getFormattedString(jobDescription.getGenerals()));
         }
         if (jobDescription.getResponsibilities() != null) {
-            mTitle.add(R.string.responsibilities);
-            mJobDescription.add(getFormattedString(jobDescription.getResponsibilities()));
+            title.add(R.string.responsibilities);
+            jobDescriptions.add(getFormattedString(jobDescription.getResponsibilities()));
         }
         if (jobDescription.getRequirements() != null) {
-            mTitle.add(R.string.requirements);
-            mJobDescription.add(getFormattedString(jobDescription.getRequirements()));
+            title.add(R.string.requirements);
+            jobDescriptions.add(getFormattedString(jobDescription.getRequirements()));
         }
         if (jobDescription.getSkills() != null) {
-            mTitle.add(R.string.skills);
-            mJobDescription.add(getFormattedString(jobDescription.getSkills()));
+            title.add(R.string.skills);
+            jobDescriptions.add(getFormattedString(jobDescription.getSkills()));
         }
+
+        return new JobDetailAdapter(jobDescriptions, title);
     }
 
     private String getFormattedString(List<String> requirements) {
