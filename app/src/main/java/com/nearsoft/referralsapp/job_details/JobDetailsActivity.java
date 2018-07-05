@@ -1,11 +1,6 @@
 package com.nearsoft.referralsapp.job_details;
 
-import android.support.v7.app.AppCompatActivity;
-package com.nearsoft.referralsapp.job_details;
-
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
