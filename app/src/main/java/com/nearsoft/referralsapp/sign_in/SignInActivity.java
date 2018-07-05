@@ -2,9 +2,8 @@ package com.nearsoft.referralsapp.sign_in;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -14,24 +13,21 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.nearsoft.referralsapp.JobListing;
+import com.nearsoft.referralsapp.job_openings.JobListingActivity;
 import com.nearsoft.referralsapp.R;
 import com.nearsoft.referralsapp.databinding.SignInActivityBinding;
 
 public class SignInActivity extends AppCompatActivity implements SignInActivityContract.SingInView {
-    private static final String TAG = "SignInActivity Activity";
-    private static final String EMAIL_REGEX = "^[a-zA-Z]+@nearsoft.com$";
-    private static final int RC_SIGN_IN = 9001;
+    private SignInActivityPresenter mPresenter;
     private GoogleSignInClient mGoogleSignInClient;
+    private static final int RC_SIGN_IN = 9001;
+    private static final String TAG = "SignInActivity Activity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SignInActivityBinding binding = DataBindingUtil.setContentView(this, R.layout.sign_in_activity);
-        SignInActivityPresenter mPresenter = new SignInActivityPresenter(this);
-        binding.setPresenter(mPresenter);
 
         SignInButton signInButton = findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_WIDE);
@@ -41,43 +37,15 @@ public class SignInActivity extends AppCompatActivity implements SignInActivityC
                 .build();
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        mPresenter = new SignInActivityPresenter(this);
+        binding.setPresenter(mPresenter);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        updateUI(account);
-    }
-
-    private void updateUI(GoogleSignInAccount account) {
-        if (account != null) {
-            String email = account.getEmail();
-            if (email != null && email.matches(EMAIL_REGEX)) {
-                startActivity(new Intent(this, JobListing.class));
-                Toast.makeText(this, R.string.SignInSuccess, Toast.LENGTH_SHORT).show();
-                finish();
-            } else {
-                Toast.makeText(this, R.string.SingInFailure, Toast.LENGTH_SHORT).show();
-                signOut();
-            }
-        }
-    }
-
-    private void signOut() {
-        mGoogleSignInClient.signOut()
-                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        updateUI(null);
-                    }
-                });
-    }
-
-    private void signIn() {
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+        checkPreviousSignIn();
     }
 
     @Override
@@ -93,21 +61,43 @@ public class SignInActivity extends AppCompatActivity implements SignInActivityC
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            updateUI(account);
+            mPresenter.checkGoogleAccount(account);
         } catch (ApiException e) {
             Log.e(TAG, "signInResult:failed code=" + e.getStatusCode(), e);
-            updateUI(null);
         }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        signOut();
+
+        mPresenter = null;
     }
 
     @Override
-    public void showJobListingActivity() {
-        signIn();
+    public void startHomeActivity() {
+        startActivity(new Intent(this, JobListingActivity.class));
+        finish();
+    }
+
+    @Override
+    public void startAccountsActivity() {
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    @Override
+    public void displaySignInErrorMessage() {
+        Toast.makeText(this, R.string.sing_in_failure, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void checkPreviousSignIn() {
+        mPresenter.checkGoogleAccount(GoogleSignIn.getLastSignedInAccount(this));
+    }
+
+    @Override
+    public void signOut() {
+        mGoogleSignInClient.signOut();
     }
 }
