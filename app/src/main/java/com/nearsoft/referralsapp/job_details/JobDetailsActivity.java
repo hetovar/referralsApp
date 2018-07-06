@@ -10,10 +10,13 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nearsoft.referralsapp.JobDescription;
 import com.nearsoft.referralsapp.R;
@@ -25,7 +28,11 @@ import java.util.List;
 
 public class JobDetailsActivity extends AppCompatActivity {
 
+    public static final String CONTACT_NAME = "CONTACT_NAME";
+    public static final String CONTACT_EMAIL = "CONTACT_EMAIL";
+    public static final String RESUME_URI = "RESUME_URI";
     private static final int RESUME_FILE_CODE = 9002;
+    private Uri resumeUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +52,13 @@ public class JobDetailsActivity extends AppCompatActivity {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), ReferralActivity.class));
+                Intent referralActivityIntent = new Intent(getApplicationContext(), ReferralActivity.class);
+
+                EditText contactNameEditText = findViewById(R.id.name_edit_text);
+                EditText contactEmailEditText = findViewById(R.id.email_edit_text);
+
+                if (ableToAddParams(referralActivityIntent, contactNameEditText, contactEmailEditText))
+                    startActivity(referralActivityIntent);
             }
         });
 
@@ -60,15 +73,37 @@ public class JobDetailsActivity extends AppCompatActivity {
         });
     }
 
+    private boolean ableToAddParams(Intent referralActivityIntent,
+                                    EditText contactNameEditText, EditText contactEmailEditText) {
+
+        if (!isFieldEmtpy(contactNameEditText) && !isFieldEmtpy(contactEmailEditText)) {
+            referralActivityIntent.putExtra(CONTACT_NAME, contactNameEditText.getText().toString());
+            referralActivityIntent.putExtra(CONTACT_EMAIL, contactEmailEditText.getText().toString());
+            referralActivityIntent.putExtra(RESUME_URI, resumeUri);
+            return true;
+        }
+
+        Toast.makeText(this, "Do not leave empty fields.", Toast.LENGTH_SHORT).show();
+        return false;
+    }
+
+    private boolean isFieldEmtpy(EditText contactNameEditText) {
+        if (TextUtils.isEmpty(contactNameEditText.getText())) {
+            contactNameEditText.setError("Field must be filled");
+            return true;
+        }
+        return false;
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode){
+        switch (requestCode) {
             case RESUME_FILE_CODE:
-                if(resultCode == RESULT_OK){
-                    Uri returnUri = data.getData();
+                if (resultCode == RESULT_OK) {
+                    resumeUri = data.getData();
 
-                    Cursor returnCursor = getContentResolver().query(returnUri, null,
+                    Cursor returnCursor = getContentResolver().query(resumeUri, null,
                             null, null, null);
                     int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
                     returnCursor.moveToFirst();
