@@ -1,11 +1,15 @@
 package com.nearsoft.referralsapp.send_referral;
 
+import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
@@ -13,8 +17,10 @@ import android.widget.Toast;
 
 import com.nearsoft.referralsapp.ApiClient;
 import com.nearsoft.referralsapp.ApiInterface;
+import com.nearsoft.referralsapp.Mail;
 import com.nearsoft.referralsapp.R;
 import com.nearsoft.referralsapp.Recruiter;
+import com.nearsoft.referralsapp.job_details.JobDetailsActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,14 +32,22 @@ import retrofit2.Response;
 public class ReferralActivity extends AppCompatActivity implements ReferralAdapter.ReferralAdapterListener {
     private ReferralAdapter mAdapter;
     private ArrayList<Recruiter> recruiters = new ArrayList<>();
+    private Switch switchStrongReferral;
+    private Button sendEmail;
+    private Recruiter mRecruiter;
+    private String referName;
+    private String referEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.referral_activity);
 
+        getReferInformation();
+
+        sendEmail = findViewById(R.id.send_referral_button);
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        Switch switchStrongReferral = findViewById(R.id.switch_strong_referral);
+        switchStrongReferral = findViewById(R.id.switch_strong_referral);
         final EditText editTextWhen = findViewById(R.id.when_edit_text);
         final EditText editTextWhere = findViewById(R.id.where_edit_text);
         final EditText editTextWhy = findViewById(R.id.why_edit_text);
@@ -59,6 +73,46 @@ public class ReferralActivity extends AppCompatActivity implements ReferralAdapt
                 }
             }
         });
+
+        sendEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    builder = new AlertDialog.Builder(getApplicationContext(), android.R.style.Theme_Material_Dialog_Alert);
+                } else {
+                    builder = new AlertDialog.Builder(getApplicationContext());
+                }
+                builder.setTitle("Send email")
+                        .setMessage("Are you sure you want to send an email?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                Mail mail = new Mail();
+                                mail.setJobId(1);
+                                mail.setRecruiterId(mRecruiter.getId());
+                                mail.setReferredName(referName);
+                                mail.setReferredEmail(referEmail);
+                                mail.setResume(null);
+
+                                ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+
+                                Call<Mail> call = apiService.sendMail(mail);
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+            }
+        });
+    }
+
+    private void getReferInformation() {
+        referName = getIntent().getStringExtra(JobDetailsActivity.CONTACT_NAME);
+        referEmail = getIntent().getStringExtra(JobDetailsActivity.CONTACT_EMAIL);
     }
 
     @Override
@@ -95,6 +149,11 @@ public class ReferralActivity extends AppCompatActivity implements ReferralAdapt
 
     @Override
     public void onRowClicked(Recruiter recruiter) {
-        // TODO: Get the required data that is going to be send through an email.
+        if(switchStrongReferral.getVisibility() == View.INVISIBLE
+                || sendEmail.getVisibility() == View.INVISIBLE){
+            switchStrongReferral.setVisibility(View.VISIBLE);
+            sendEmail.setVisibility(View.VISIBLE);
+        }
+        mRecruiter = recruiter:
     }
 }
