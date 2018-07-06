@@ -1,11 +1,20 @@
 package com.nearsoft.referralsapp;
 
 public class NearsoftJob {
+    private int jobId;
     private String title;
     private JobDescription description;
 
     public NearsoftJob() {
 
+    }
+
+    public int getJobId() {
+        return jobId;
+    }
+
+    public void setJobId(int jobId) {
+        this.jobId = jobId;
     }
 
     public String getTitle() {
