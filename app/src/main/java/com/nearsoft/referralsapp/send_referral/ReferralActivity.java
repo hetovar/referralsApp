@@ -154,6 +154,6 @@ public class ReferralActivity extends AppCompatActivity implements ReferralAdapt
             switchStrongReferral.setVisibility(View.VISIBLE);
             sendEmail.setVisibility(View.VISIBLE);
         }
-        mRecruiter = recruiter:
+        mRecruiter = recruiter;
     }
 }

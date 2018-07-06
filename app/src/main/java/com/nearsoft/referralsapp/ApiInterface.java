@@ -17,5 +17,5 @@ public interface ApiInterface {
 
     @POST("refer")
     @FormUrlEncoded
-    Call<Mail> sendMail(@Body Mail mail)
+    Call<Mail> sendMail(@Body Mail mail);
 }
