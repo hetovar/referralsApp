@@ -1,7 +1,6 @@
 package com.nearsoft.referralsapp.send_referral;
 
 import android.content.DialogInterface;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
@@ -45,7 +44,6 @@ public class ReferralActivity extends AppCompatActivity implements ReferralAdapt
 
         getReferInformation();
 
-        sendEmail = findViewById(R.id.send_referral_button);
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         switchStrongReferral = findViewById(R.id.switch_strong_referral);
         final EditText editTextWhen = findViewById(R.id.when_edit_text);
@@ -62,11 +60,11 @@ public class ReferralActivity extends AppCompatActivity implements ReferralAdapt
         switchStrongReferral.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b){
+                if (b) {
                     editTextWhen.setVisibility(View.VISIBLE);
                     editTextWhere.setVisibility(View.VISIBLE);
                     editTextWhy.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     editTextWhen.setVisibility(View.INVISIBLE);
                     editTextWhere.setVisibility(View.INVISIBLE);
                     editTextWhy.setVisibility(View.INVISIBLE);
@@ -74,39 +72,55 @@ public class ReferralActivity extends AppCompatActivity implements ReferralAdapt
             }
         });
 
+        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        dialogBuilder.setMessage("Are you sure to send the email with this contact?");
+        dialogBuilder.setCancelable(true);
+
+        dialogBuilder.setPositiveButton(
+                "Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Mail mail = new Mail();
+                        mail.setJobId(1);
+                        mail.setRecruiterId(mRecruiter.getId());
+                        mail.setReferredName(referName);
+                        mail.setReferredEmail(referEmail);
+
+                        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+                        apiService.sendMail(mRecruiter.getId(),
+                                1, referName, referEmail, null).enqueue(new Callback<Mail>() {
+                            @Override
+                            public void onResponse(Call<Mail> call, Response<Mail> response) {
+                                if(response.isSuccessful()) {
+                                    Toast.makeText(getApplicationContext(), "email send successfully", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<Mail> call, Throwable t) {
+                            }
+                        });
+
+                        dialog.cancel();
+                    }
+                });
+
+        dialogBuilder.setNegativeButton(
+                "No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        sendEmail = findViewById(R.id.send_referral_button);
         sendEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builder;
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    builder = new AlertDialog.Builder(getApplicationContext(), android.R.style.Theme_Material_Dialog_Alert);
-                } else {
-                    builder = new AlertDialog.Builder(getApplicationContext());
-                }
-                builder.setTitle("Send email")
-                        .setMessage("Are you sure you want to send an email?")
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                Mail mail = new Mail();
-                                mail.setJobId(1);
-                                mail.setRecruiterId(mRecruiter.getId());
-                                mail.setReferredName(referName);
-                                mail.setReferredEmail(referEmail);
-                                mail.setResume(null);
-
-                                ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-
-                                Call<Mail> call = apiService.sendMail(mail);
-                            }
-                        })
-                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                
-                            }
-                        })
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show();
+                AlertDialog alertDialog = dialogBuilder.create();
+                alertDialog.show();
             }
+
         });
     }
 
@@ -149,8 +163,8 @@ public class ReferralActivity extends AppCompatActivity implements ReferralAdapt
 
     @Override
     public void onRowClicked(Recruiter recruiter) {
-        if(switchStrongReferral.getVisibility() == View.INVISIBLE
-                || sendEmail.getVisibility() == View.INVISIBLE){
+        if (switchStrongReferral.getVisibility() == View.INVISIBLE
+                || sendEmail.getVisibility() == View.INVISIBLE) {
             switchStrongReferral.setVisibility(View.VISIBLE);
             sendEmail.setVisibility(View.VISIBLE);
         }

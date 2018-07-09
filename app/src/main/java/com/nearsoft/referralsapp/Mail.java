@@ -18,7 +18,6 @@ public class Mail {
     @SerializedName("referred_email")
     @Expose
     private String referredEmail;
-
     @SerializedName("resume_file")
     @Expose
     private File resume;
