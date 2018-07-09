@@ -1,6 +1,8 @@
 package com.nearsoft.referralsapp;
 
-public class NearsoftJob {
+import java.io.Serializable;
+
+public class NearsoftJob implements Serializable{
     private int jobId;
     private String title;
     private JobDescription description;

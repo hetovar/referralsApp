@@ -1,9 +1,8 @@
 package com.nearsoft.referralsapp;
 
-import java.io.Serializable;
 import java.util.List;
 
-public class JobDescription implements Serializable {
+public class JobDescription {
     private List<String> requirements;
     private List<String> responsibilities;
     private List<String> skills;

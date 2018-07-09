@@ -11,7 +11,6 @@ import android.widget.Toast;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.nearsoft.referralsapp.ApiClient;
 import com.nearsoft.referralsapp.ApiInterface;
-import com.nearsoft.referralsapp.JobDescription;
 import com.nearsoft.referralsapp.NearsoftJob;
 import com.nearsoft.referralsapp.R;
 import com.nearsoft.referralsapp.job_details.JobDetailsActivity;
@@ -25,7 +24,7 @@ import retrofit2.Response;
 
 public class JobListingActivity extends AppCompatActivity
         implements JobListingAdapter.JobListingAdapterListener {
-    public static final String JOBDESCRIPTION = "JOBDESCRIPTION";
+    public static final String NEARSOFT_JOB = "NEARSOFT_JOB";
     private ArrayList<NearsoftJob> mNearsoftJobs = new ArrayList<>();
     private JobListingAdapter mAdapter;
 
@@ -80,9 +79,9 @@ public class JobListingActivity extends AppCompatActivity
     }
 
     @Override
-    public void onRowClicked(JobDescription jobDescription) {
+    public void onRowClicked(NearsoftJob nearsoftJob) {
         Intent intent = new Intent(this, JobDetailsActivity.class);
-        intent.putExtra(JOBDESCRIPTION, jobDescription);
+        intent.putExtra(NEARSOFT_JOB, nearsoftJob);
         startActivity(intent);
     }
 }

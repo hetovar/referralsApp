@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nearsoft.referralsapp.JobDescription;
+import com.nearsoft.referralsapp.NearsoftJob;
 import com.nearsoft.referralsapp.R;
 import com.nearsoft.referralsapp.job_openings.JobListingActivity;
 import com.nearsoft.referralsapp.send_referral.ReferralActivity;
@@ -32,7 +33,9 @@ public class JobDetailsActivity extends AppCompatActivity {
     public static final String CONTACT_EMAIL = "CONTACT_EMAIL";
     public static final String RESUME_URI = "RESUME_URI";
     private static final int RESUME_FILE_CODE = 9002;
+    public static final String JOB_ID = "JOB_ID";
     private Uri resumeUri;
+    private int jobId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +82,7 @@ public class JobDetailsActivity extends AppCompatActivity {
         if (!isFieldEmtpy(contactNameEditText) && !isFieldEmtpy(contactEmailEditText)) {
             referralActivityIntent.putExtra(CONTACT_NAME, contactNameEditText.getText().toString());
             referralActivityIntent.putExtra(CONTACT_EMAIL, contactEmailEditText.getText().toString());
+            referralActivityIntent.putExtra(JOB_ID, jobId);
             referralActivityIntent.putExtra(RESUME_URI, resumeUri);
             return true;
         }
@@ -121,8 +125,12 @@ public class JobDetailsActivity extends AppCompatActivity {
         ArrayList<String> jobDescriptions = new ArrayList<>();
         ArrayList<Integer> title = new ArrayList<>();
 
-        JobDescription jobDescription =
-                (JobDescription) getIntent().getSerializableExtra(JobListingActivity.JOBDESCRIPTION);
+
+        NearsoftJob nearsoftJob =
+                (NearsoftJob) getIntent().getSerializableExtra(JobListingActivity.NEARSOFT_JOB);
+
+        jobId = nearsoftJob.getJobId();
+        JobDescription jobDescription = nearsoftJob.getDescription();
 
         if (jobDescription.getGenerals() != null) {
             title.add(R.string.generals);

@@ -56,7 +56,7 @@ public class JobListingAdapter extends RecyclerView.Adapter<JobListingAdapter.Vi
             @Override
             public void onClick(View view) {
                 NearsoftJob nearsoftJob = nearsoftJobs.get(position);
-                listener.onRowClicked(nearsoftJob.getDescription());
+                listener.onRowClicked(nearsoftJob);
             }
         });
     }
@@ -67,6 +67,6 @@ public class JobListingAdapter extends RecyclerView.Adapter<JobListingAdapter.Vi
     }
 
     public interface JobListingAdapterListener {
-        void onRowClicked(JobDescription jobDescription);
+        void onRowClicked(NearsoftJob nearsoftJob);
     }
 }

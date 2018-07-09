@@ -36,6 +36,7 @@ public class ReferralActivity extends AppCompatActivity implements ReferralAdapt
     private Recruiter mRecruiter;
     private String referName;
     private String referEmail;
+    private int jobId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,15 +81,9 @@ public class ReferralActivity extends AppCompatActivity implements ReferralAdapt
                 "Yes",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Mail mail = new Mail();
-                        mail.setJobId(1);
-                        mail.setRecruiterId(mRecruiter.getId());
-                        mail.setReferredName(referName);
-                        mail.setReferredEmail(referEmail);
-
                         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
                         apiService.sendMail(mRecruiter.getId(),
-                                1, referName, referEmail, null).enqueue(new Callback<Mail>() {
+                                jobId, referName, referEmail, null).enqueue(new Callback<Mail>() {
                             @Override
                             public void onResponse(Call<Mail> call, Response<Mail> response) {
                                 if(response.isSuccessful()) {
@@ -127,6 +122,8 @@ public class ReferralActivity extends AppCompatActivity implements ReferralAdapt
     private void getReferInformation() {
         referName = getIntent().getStringExtra(JobDetailsActivity.CONTACT_NAME);
         referEmail = getIntent().getStringExtra(JobDetailsActivity.CONTACT_EMAIL);
+        // TODO: verify that mail is sent over
+        jobId = getIntent().getIntExtra(JobDetailsActivity.JOB_ID, -1);
     }
 
     @Override
