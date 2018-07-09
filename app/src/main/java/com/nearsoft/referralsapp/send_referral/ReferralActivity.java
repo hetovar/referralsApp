@@ -74,11 +74,11 @@ public class ReferralActivity extends AppCompatActivity implements ReferralAdapt
         });
 
         final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-        dialogBuilder.setMessage("Are you sure to send the email with this contact?");
+        dialogBuilder.setMessage(R.string.question_send_mail);
         dialogBuilder.setCancelable(true);
 
         dialogBuilder.setPositiveButton(
-                "Yes",
+                R.string.yes,
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
@@ -87,7 +87,7 @@ public class ReferralActivity extends AppCompatActivity implements ReferralAdapt
                             @Override
                             public void onResponse(Call<Mail> call, Response<Mail> response) {
                                 if(response.isSuccessful()) {
-                                    Toast.makeText(getApplicationContext(), "email send successfully", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), R.string.email_send_successfully, Toast.LENGTH_SHORT).show();
                                 }
                             }
 
@@ -101,7 +101,7 @@ public class ReferralActivity extends AppCompatActivity implements ReferralAdapt
                 });
 
         dialogBuilder.setNegativeButton(
-                "No",
+                R.string.no,
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();

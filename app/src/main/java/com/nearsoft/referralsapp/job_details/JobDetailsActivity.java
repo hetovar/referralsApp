@@ -87,13 +87,13 @@ public class JobDetailsActivity extends AppCompatActivity {
             return true;
         }
 
-        Toast.makeText(this, "Do not leave empty fields.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.empty_fields, Toast.LENGTH_SHORT).show();
         return false;
     }
 
     private boolean isFieldEmtpy(EditText contactNameEditText) {
         if (TextUtils.isEmpty(contactNameEditText.getText())) {
-            contactNameEditText.setError("Field must be filled");
+            contactNameEditText.setError(getString(R.string.fill_empty_field));
             return true;
         }
         return false;
