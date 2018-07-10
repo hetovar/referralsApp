@@ -1,13 +1,9 @@
 package com.nearsoft.referralsapp.send_referral;
 
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.graphics.PathUtils;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,13 +23,10 @@ import com.nearsoft.referralsapp.Recruiter;
 import com.nearsoft.referralsapp.job_details.JobDetailsActivity;
 
 import java.io.File;
-import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -110,12 +103,14 @@ public class ReferralActivity extends AppCompatActivity implements ReferralAdapt
                             referResume = new File(getCacheDir(), "uploadResume.pdf");
                             FileOutputStream outputStream = new FileOutputStream(referResume);
 
-                            int  bytesAvailable = inputStream.available();
-                            int maxBufferSize = 1 * 1024 * 1024;
+                            assert inputStream != null;
+
+                            int bytesAvailable = inputStream.available();
+                            int maxBufferSize = 1024 * 1024;
                             int bufferSize = Math.min(bytesAvailable, maxBufferSize);
                             final byte[] buffers = new byte[bufferSize];
 
-                            int read = 0;
+                            int read;
                             while ((read = inputStream.read(buffers)) != -1) {
                                 outputStream.write(buffers, 0, read);
                             }
@@ -124,9 +119,10 @@ public class ReferralActivity extends AppCompatActivity implements ReferralAdapt
                             outputStream.close();
 
                         } catch (FileNotFoundException e) {
+                            Log.e("REFERRAL_ACTIVITY", "File Not found error", e);
 
                         } catch (IOException e) {
-                            e.printStackTrace();
+                            Log.e("REFERRAL_ACTIVITY", "Input output error", e);
                         }
 
                         if (referResume != null) {
@@ -147,14 +143,14 @@ public class ReferralActivity extends AppCompatActivity implements ReferralAdapt
                         apiService.sendMail(mRecruiter.getId(),
                                 jobId, name, email, body).enqueue(new Callback<ResponseBody>() {
                             @Override
-                            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                                 if (response.isSuccessful()) {
                                     Toast.makeText(getApplicationContext(), R.string.email_send_successfully, Toast.LENGTH_SHORT).show();
                                 }
                             }
 
                             @Override
-                            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
                                 Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
