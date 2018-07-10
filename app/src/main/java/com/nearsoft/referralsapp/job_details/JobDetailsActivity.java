@@ -69,9 +69,10 @@ public class JobDetailsActivity extends AppCompatActivity {
         buttonResumeFile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intentGetFile = new Intent(Intent.ACTION_GET_CONTENT);
+                Intent intentGetFile = new Intent(Intent.ACTION_OPEN_DOCUMENT);
                 intentGetFile.setType("application/pdf");
-                startActivityForResult(intentGetFile, RESUME_FILE_CODE);
+                startActivityForResult(
+                        Intent.createChooser(intentGetFile, "Select Resume"), RESUME_FILE_CODE);
             }
         });
     }
@@ -83,7 +84,10 @@ public class JobDetailsActivity extends AppCompatActivity {
             referralActivityIntent.putExtra(CONTACT_NAME, contactNameEditText.getText().toString());
             referralActivityIntent.putExtra(CONTACT_EMAIL, contactEmailEditText.getText().toString());
             referralActivityIntent.putExtra(JOB_ID, jobId);
-            referralActivityIntent.putExtra(RESUME_URI, resumeUri);
+
+            if(resumeUri != null)
+                referralActivityIntent.putExtra(RESUME_URI, resumeUri.toString());
+
             return true;
         }
 
@@ -129,7 +133,7 @@ public class JobDetailsActivity extends AppCompatActivity {
         NearsoftJob nearsoftJob =
                 (NearsoftJob) getIntent().getSerializableExtra(JobListingActivity.NEARSOFT_JOB);
 
-        jobId = nearsoftJob.getJobId();
+        jobId = nearsoftJob.getId();
         JobDescription jobDescription = nearsoftJob.getDescription();
 
         if (jobDescription.getGenerals() != null) {

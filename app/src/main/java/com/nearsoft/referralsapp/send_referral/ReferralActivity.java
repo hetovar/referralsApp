@@ -1,12 +1,18 @@
 package com.nearsoft.referralsapp.send_referral;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.graphics.PathUtils;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -16,14 +22,25 @@ import android.widget.Toast;
 
 import com.nearsoft.referralsapp.ApiClient;
 import com.nearsoft.referralsapp.ApiInterface;
-import com.nearsoft.referralsapp.Mail;
 import com.nearsoft.referralsapp.R;
 import com.nearsoft.referralsapp.Recruiter;
 import com.nearsoft.referralsapp.job_details.JobDetailsActivity;
 
+import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -37,6 +54,7 @@ public class ReferralActivity extends AppCompatActivity implements ReferralAdapt
     private String referName;
     private String referEmail;
     private int jobId;
+    private Uri resumeUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +63,7 @@ public class ReferralActivity extends AppCompatActivity implements ReferralAdapt
 
         getReferInformation();
 
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        final RecyclerView recyclerView = findViewById(R.id.recycler_view);
         switchStrongReferral = findViewById(R.id.switch_strong_referral);
         final EditText editTextWhen = findViewById(R.id.when_edit_text);
         final EditText editTextWhere = findViewById(R.id.where_edit_text);
@@ -82,17 +100,62 @@ public class ReferralActivity extends AppCompatActivity implements ReferralAdapt
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+
+                        MultipartBody.Part body = null;
+                        File referResume = null;
+
+                        try {
+
+                            InputStream inputStream = getContentResolver().openInputStream(resumeUri);
+                            referResume = new File(getCacheDir(), "uploadResume.pdf");
+                            FileOutputStream outputStream = new FileOutputStream(referResume);
+
+                            int  bytesAvailable = inputStream.available();
+                            int maxBufferSize = 1 * 1024 * 1024;
+                            int bufferSize = Math.min(bytesAvailable, maxBufferSize);
+                            final byte[] buffers = new byte[bufferSize];
+
+                            int read = 0;
+                            while ((read = inputStream.read(buffers)) != -1) {
+                                outputStream.write(buffers, 0, read);
+                            }
+
+                            inputStream.close();
+                            outputStream.close();
+
+                        } catch (FileNotFoundException e) {
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        if (referResume != null) {
+                            RequestBody requestFile = RequestBody
+                                    .create(MediaType.parse(getContentResolver().getType(resumeUri)),
+                                            referResume);
+
+                            body = MultipartBody.Part.createFormData("resume_file",
+                                    referResume.getName(), requestFile);
+                        }
+
+                        RequestBody name = RequestBody
+                                .create(okhttp3.MultipartBody.FORM, referName);
+
+                        RequestBody email = RequestBody
+                                .create(okhttp3.MultipartBody.FORM, referEmail);
+
                         apiService.sendMail(mRecruiter.getId(),
-                                jobId, referName, referEmail, null).enqueue(new Callback<Mail>() {
+                                jobId, name, email, body).enqueue(new Callback<ResponseBody>() {
                             @Override
-                            public void onResponse(Call<Mail> call, Response<Mail> response) {
-                                if(response.isSuccessful()) {
+                            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                if (response.isSuccessful()) {
                                     Toast.makeText(getApplicationContext(), R.string.email_send_successfully, Toast.LENGTH_SHORT).show();
                                 }
                             }
 
                             @Override
-                            public void onFailure(Call<Mail> call, Throwable t) {
+                            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
 
@@ -122,8 +185,11 @@ public class ReferralActivity extends AppCompatActivity implements ReferralAdapt
     private void getReferInformation() {
         referName = getIntent().getStringExtra(JobDetailsActivity.CONTACT_NAME);
         referEmail = getIntent().getStringExtra(JobDetailsActivity.CONTACT_EMAIL);
-        // TODO: verify that mail is sent over
         jobId = getIntent().getIntExtra(JobDetailsActivity.JOB_ID, -1);
+        String resumePath = getIntent().getStringExtra(JobDetailsActivity.RESUME_URI);
+
+        if (resumePath != null && !resumePath.isEmpty())
+            resumeUri = Uri.parse(resumePath);
     }
 
     @Override
