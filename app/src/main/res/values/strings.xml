@@ -13,4 +13,5 @@
     <string name="no">No</string>
     <string name="question_send_mail">Are you sure to send the email with this contact?</string>
     <string name="fill_empty_field">Field must be filled</string>
+    <string name="facebook_app_id">596146524118787</string>
 </resources>

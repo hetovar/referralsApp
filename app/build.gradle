@@ -52,4 +52,7 @@ dependencies {
 
     // Image library
     implementation 'com.facebook.fresco:fresco:1.9.0'
+
+    // Facebook sharing SDK
+    implementation 'com.facebook.android:facebook-share:4.34.0'
 }
