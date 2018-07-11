@@ -97,41 +97,10 @@ public class ReferralActivity extends AppCompatActivity implements ReferralAdapt
                         MultipartBody.Part body = null;
                         File referResume = null;
 
-                        try {
-
-                            InputStream inputStream = getContentResolver().openInputStream(resumeUri);
-                            referResume = new File(getCacheDir(), "uploadResume.pdf");
-                            FileOutputStream outputStream = new FileOutputStream(referResume);
-
-                            assert inputStream != null;
-
-                            int bytesAvailable = inputStream.available();
-                            int maxBufferSize = 1024 * 1024;
-                            int bufferSize = Math.min(bytesAvailable, maxBufferSize);
-                            final byte[] buffers = new byte[bufferSize];
-
-                            int read;
-                            while ((read = inputStream.read(buffers)) != -1) {
-                                outputStream.write(buffers, 0, read);
-                            }
-
-                            inputStream.close();
-                            outputStream.close();
-
-                        } catch (FileNotFoundException e) {
-                            Log.e("REFERRAL_ACTIVITY", "File Not found error", e);
-
-                        } catch (IOException e) {
-                            Log.e("REFERRAL_ACTIVITY", "Input output error", e);
-                        }
+                        referResume = getFile(referResume);
 
                         if (referResume != null) {
-                            RequestBody requestFile = RequestBody
-                                    .create(MediaType.parse(getContentResolver().getType(resumeUri)),
-                                            referResume);
-
-                            body = MultipartBody.Part.createFormData("resume_file",
-                                    referResume.getName(), requestFile);
+                            body = transformFileIntoPart(referResume);
                         }
 
                         RequestBody name = RequestBody
@@ -176,6 +145,48 @@ public class ReferralActivity extends AppCompatActivity implements ReferralAdapt
             }
 
         });
+    }
+
+    @NonNull
+    private MultipartBody.Part transformFileIntoPart(File referResume) {
+        MultipartBody.Part body;
+        RequestBody requestFile = RequestBody
+                .create(MediaType.parse(getContentResolver().getType(resumeUri)),
+                        referResume);
+
+        body = MultipartBody.Part.createFormData("resume_file",
+                referResume.getName(), requestFile);
+        return body;
+    }
+
+    private File getFile(File referResume) {
+        try {
+            InputStream inputStream = getContentResolver().openInputStream(resumeUri);
+            referResume = new File(getCacheDir(), "uploadResume.pdf");
+            FileOutputStream outputStream = new FileOutputStream(referResume);
+
+            assert inputStream != null;
+
+            int bytesAvailable = inputStream.available();
+            int maxBufferSize = 1024 * 1024;
+            int bufferSize = Math.min(bytesAvailable, maxBufferSize);
+            final byte[] buffers = new byte[bufferSize];
+
+            int read;
+            while ((read = inputStream.read(buffers)) != -1) {
+                outputStream.write(buffers, 0, read);
+            }
+
+            inputStream.close();
+            outputStream.close();
+
+        } catch (FileNotFoundException e) {
+            Log.e("REFERRAL_ACTIVITY", "File Not found error", e);
+
+        } catch (IOException e) {
+            Log.e("REFERRAL_ACTIVITY", "Input output error", e);
+        }
+        return referResume;
     }
 
     private void getReferInformation() {
