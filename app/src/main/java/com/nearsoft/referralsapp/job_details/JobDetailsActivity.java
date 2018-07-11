@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nearsoft.referralsapp.JobDescription;
+import com.nearsoft.referralsapp.NearsoftJob;
 import com.nearsoft.referralsapp.R;
 import com.nearsoft.referralsapp.job_openings.JobListingActivity;
 import com.nearsoft.referralsapp.send_referral.ReferralActivity;
@@ -32,7 +33,9 @@ public class JobDetailsActivity extends AppCompatActivity {
     public static final String CONTACT_EMAIL = "CONTACT_EMAIL";
     public static final String RESUME_URI = "RESUME_URI";
     private static final int RESUME_FILE_CODE = 9002;
+    public static final String JOB_ID = "JOB_ID";
     private Uri resumeUri;
+    private int jobId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,9 +69,10 @@ public class JobDetailsActivity extends AppCompatActivity {
         buttonResumeFile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intentGetFile = new Intent(Intent.ACTION_GET_CONTENT);
+                Intent intentGetFile = new Intent(Intent.ACTION_OPEN_DOCUMENT);
                 intentGetFile.setType("application/pdf");
-                startActivityForResult(intentGetFile, RESUME_FILE_CODE);
+                startActivityForResult(
+                        Intent.createChooser(intentGetFile, "Select Resume"), RESUME_FILE_CODE);
             }
         });
     }
@@ -79,17 +83,21 @@ public class JobDetailsActivity extends AppCompatActivity {
         if (!isFieldEmtpy(contactNameEditText) && !isFieldEmtpy(contactEmailEditText)) {
             referralActivityIntent.putExtra(CONTACT_NAME, contactNameEditText.getText().toString());
             referralActivityIntent.putExtra(CONTACT_EMAIL, contactEmailEditText.getText().toString());
-            referralActivityIntent.putExtra(RESUME_URI, resumeUri);
+            referralActivityIntent.putExtra(JOB_ID, jobId);
+
+            if(resumeUri != null)
+                referralActivityIntent.putExtra(RESUME_URI, resumeUri.toString());
+
             return true;
         }
 
-        Toast.makeText(this, "Do not leave empty fields.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.empty_fields, Toast.LENGTH_SHORT).show();
         return false;
     }
 
     private boolean isFieldEmtpy(EditText contactNameEditText) {
         if (TextUtils.isEmpty(contactNameEditText.getText())) {
-            contactNameEditText.setError("Field must be filled");
+            contactNameEditText.setError(getString(R.string.fill_empty_field));
             return true;
         }
         return false;
@@ -121,8 +129,12 @@ public class JobDetailsActivity extends AppCompatActivity {
         ArrayList<String> jobDescriptions = new ArrayList<>();
         ArrayList<Integer> title = new ArrayList<>();
 
-        JobDescription jobDescription =
-                (JobDescription) getIntent().getSerializableExtra(JobListingActivity.JOBDESCRIPTION);
+
+        NearsoftJob nearsoftJob =
+                (NearsoftJob) getIntent().getSerializableExtra(JobListingActivity.NEARSOFT_JOB);
+
+        jobId = nearsoftJob.getId();
+        JobDescription jobDescription = nearsoftJob.getDescription();
 
         if (jobDescription.getGenerals() != null) {
             title.add(R.string.generals);
