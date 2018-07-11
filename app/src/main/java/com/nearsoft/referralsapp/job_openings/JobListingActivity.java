@@ -44,6 +44,7 @@ public class JobListingActivity extends AppCompatActivity
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(mAdapter);
 
+
         Fresco.initialize(this);
     }
 

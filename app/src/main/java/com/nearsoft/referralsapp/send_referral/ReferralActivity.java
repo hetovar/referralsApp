@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.google.android.gms.common.util.IOUtils;
 import com.nearsoft.referralsapp.ApiClient;
 import com.nearsoft.referralsapp.ApiInterface;
 import com.nearsoft.referralsapp.R;
@@ -23,7 +24,6 @@ import com.nearsoft.referralsapp.Recruiter;
 import com.nearsoft.referralsapp.job_details.JobDetailsActivity;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,6 +39,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ReferralActivity extends AppCompatActivity implements ReferralAdapter.ReferralAdapterListener {
+    public static final String RESUME_FILE = "resume_file";
+    public static final String UPLOAD_RESUME_PDF = "uploadResume.pdf";
     private ReferralAdapter mAdapter;
     private ArrayList<Recruiter> recruiters = new ArrayList<>();
     private Switch switchStrongReferral;
@@ -95,9 +97,7 @@ public class ReferralActivity extends AppCompatActivity implements ReferralAdapt
                         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
                         MultipartBody.Part body = null;
-                        File referResume = null;
-
-                        referResume = getFile(referResume);
+                        File referResume = getFile();
 
                         if (referResume != null) {
                             body = transformFileIntoPart(referResume);
@@ -154,38 +154,27 @@ public class ReferralActivity extends AppCompatActivity implements ReferralAdapt
                 .create(MediaType.parse(getContentResolver().getType(resumeUri)),
                         referResume);
 
-        body = MultipartBody.Part.createFormData("resume_file",
+        body = MultipartBody.Part.createFormData(RESUME_FILE,
                 referResume.getName(), requestFile);
+
         return body;
     }
 
-    private File getFile(File referResume) {
-        try {
-            InputStream inputStream = getContentResolver().openInputStream(resumeUri);
-            referResume = new File(getCacheDir(), "uploadResume.pdf");
-            FileOutputStream outputStream = new FileOutputStream(referResume);
-
-            assert inputStream != null;
-
-            int bytesAvailable = inputStream.available();
-            int maxBufferSize = 1024 * 1024;
-            int bufferSize = Math.min(bytesAvailable, maxBufferSize);
-            final byte[] buffers = new byte[bufferSize];
-
-            int read;
-            while ((read = inputStream.read(buffers)) != -1) {
-                outputStream.write(buffers, 0, read);
+    private File getFile() {
+        File referResume = null;
+        try (InputStream inputStream = getContentResolver().openInputStream(resumeUri)) {
+            if (inputStream != null) {
+                referResume = new File(getCacheDir(), UPLOAD_RESUME_PDF);
+                try (FileOutputStream outputStream = new FileOutputStream(referResume)) {
+                    IOUtils.copyStream(inputStream, outputStream);
+                }
+            } else {
+                Log.w("REFERRAL_ACTIVITY", "Could not open input stream for " + resumeUri);
             }
-
-            inputStream.close();
-            outputStream.close();
-
-        } catch (FileNotFoundException e) {
-            Log.e("REFERRAL_ACTIVITY", "File Not found error", e);
-
         } catch (IOException e) {
             Log.e("REFERRAL_ACTIVITY", "Input output error", e);
         }
+
         return referResume;
     }
 
