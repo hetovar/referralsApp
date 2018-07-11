@@ -3,7 +3,7 @@ package com.nearsoft.referralsapp;
 import java.io.Serializable;
 
 public class NearsoftJob implements Serializable{
-    private int jobId;
+    private int id;
     private String title;
     private JobDescription description;
 
@@ -11,12 +11,12 @@ public class NearsoftJob implements Serializable{
 
     }
 
-    public int getJobId() {
-        return jobId;
+    public int getId() {
+        return id;
     }
 
-    public void setJobId(int jobId) {
-        this.jobId = jobId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {

@@ -6,4 +6,11 @@
     <string name="responsibilities">Responsibilities</string>
     <string name="requirements">Requirements</string>
     <string name="skills">Skills</string>
+    <string name="empty_fields">Do not leave empty fields.</string>
+    <string name="field_empty">Field must be filled</string>
+    <string name="email_send_successfully">email send successfully</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="question_send_mail">Are you sure to send the email with this contact?</string>
+    <string name="fill_empty_field">Field must be filled</string>
 </resources>
