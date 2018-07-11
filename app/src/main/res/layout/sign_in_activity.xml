@@ -27,7 +27,7 @@
                 android:layout_height="100dp"
                 android:layout_marginTop="50dp"
                 android:contentDescription="Referrals Logo"
-                android:src="@drawable/ic_action_name" />
+                android:src="@drawable/ic_app_logo" />
 
             <TextView
                 android:layout_width="wrap_content"
