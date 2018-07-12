@@ -5,10 +5,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.nearsoft.referralsapp.JobDescription;
 import com.nearsoft.referralsapp.NearsoftJob;
 import com.nearsoft.referralsapp.R;
 
@@ -18,15 +18,21 @@ public class JobListingAdapter extends RecyclerView.Adapter<JobListingAdapter.Vi
     private ArrayList<NearsoftJob> nearsoftJobs;
     private JobListingAdapterListener listener;
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView mTextView;
-        LinearLayout layout;
+    private void applyClickEvents(ViewHolder holder, final int position) {
+        holder.layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NearsoftJob nearsoftJob = nearsoftJobs.get(position);
+                listener.onRowClicked(nearsoftJob);
+            }
+        });
 
-        ViewHolder(View itemView) {
-            super(itemView);
-            mTextView = itemView.findViewById(R.id.text);
-            layout = itemView.findViewById(R.id.itemLayout);
-        }
+        holder.shareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onShareButtonClicked(view);
+            }
+        });
     }
 
     JobListingAdapter(ArrayList<NearsoftJob> nearsoftJobs, JobListingAdapterListener listener) {
@@ -51,14 +57,10 @@ public class JobListingAdapter extends RecyclerView.Adapter<JobListingAdapter.Vi
         applyClickEvents(holder, position);
     }
 
-    private void applyClickEvents(ViewHolder holder, final int position) {
-        holder.layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                NearsoftJob nearsoftJob = nearsoftJobs.get(position);
-                listener.onRowClicked(nearsoftJob);
-            }
-        });
+    public interface JobListingAdapterListener {
+        void onRowClicked(NearsoftJob nearsoftJob);
+
+        void onShareButtonClicked(View view);
     }
 
     @Override
@@ -66,7 +68,16 @@ public class JobListingAdapter extends RecyclerView.Adapter<JobListingAdapter.Vi
         return nearsoftJobs.size();
     }
 
-    public interface JobListingAdapterListener {
-        void onRowClicked(NearsoftJob nearsoftJob);
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView mTextView;
+        ImageButton shareButton;
+        LinearLayout layout;
+
+        ViewHolder(View itemView) {
+            super(itemView);
+            mTextView = itemView.findViewById(R.id.text);
+            layout = itemView.findViewById(R.id.itemLayout);
+            shareButton = itemView.findViewById(R.id.share_button);
+        }
     }
 }

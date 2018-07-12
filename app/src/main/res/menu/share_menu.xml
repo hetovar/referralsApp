@@ -3,12 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/twitter"
-        android:orderInCategory="100"
         android:title="Twitter"
         app:showAsAction="never" />
     <item
         android:id="@+id/facebook"
-        android:orderInCategory="100"
         android:title="Facebook"
         app:showAsAction="never" />
 </menu>
