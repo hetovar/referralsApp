@@ -1,14 +1,21 @@
 package com.nearsoft.referralsapp.job_openings;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
 import com.nearsoft.referralsapp.ApiClient;
 import com.nearsoft.referralsapp.ApiInterface;
 import com.nearsoft.referralsapp.NearsoftJob;
@@ -47,6 +54,36 @@ public class JobListingActivity extends AppCompatActivity
         Fresco.initialize(this);
     }
 
+    public void showMenu(View v) {
+        PopupMenu popup = new PopupMenu(this, v);
+        final ShareDialog shareDialog = new ShareDialog(this);
+
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.facebook:
+                        ShareLinkContent content = new ShareLinkContent.Builder()
+                                .setContentUrl(Uri.parse("https://github.com/Nearsoft/jobs/blob/master/readme.md"))
+                                .build();
+
+                        shareDialog.show(content);
+                        break;
+                    case R.id.twitter:
+                        break;
+                    default:
+                        break;
+                }
+
+                return false;
+            }
+        });
+
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.share_menu, popup.getMenu());
+        popup.show();
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -83,5 +120,10 @@ public class JobListingActivity extends AppCompatActivity
         Intent intent = new Intent(this, JobDetailsActivity.class);
         intent.putExtra(NEARSOFT_JOB, nearsoftJob);
         startActivity(intent);
+    }
+
+    @Override
+    public void onShareButtonClicked(View view) {
+        showMenu(view);
     }
 }
