@@ -35,7 +35,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="url" value="jar:file:/usr/lib/android-studio/plugins/android/lib/android.jar!/images/material_design_icons/navigation/ic_more_vert_black_24dp.xml" />
+                                                <entry key="url" value="jar:file:/usr/lib/android-studio/plugins/android/lib/android.jar!/images/material_design_icons/social/ic_share_black_24dp.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -57,7 +57,7 @@
                                   <option name="values">
                                     <map>
                                       <entry key="imageAsset" value="/home/haydee/Downloads/images/9aff4622a88ae9cec72deba24c14c92bfb7acf97.png" />
-                                      <entry key="outputName" value="ic_more_vertical" />
+                                      <entry key="outputName" value="ic_share" />
                                       <entry key="themeColor" value="ff0000" />
                                     </map>
                                   </option>

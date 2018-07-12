@@ -5,7 +5,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -44,8 +49,30 @@ public class JobListingActivity extends AppCompatActivity
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(mAdapter);
 
+        ImageView share = findViewById(R.id.share_button);
+        share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showMenu(view);
+            }
+        });
 
         Fresco.initialize(this);
+    }
+
+    public void showMenu(View v) {
+        PopupMenu popup = new PopupMenu(this, v);
+
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                return false;
+            }
+        });
+
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.share_menu, popup.getMenu());
+        popup.show();
     }
 
     @Override
